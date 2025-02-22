@@ -11,7 +11,7 @@ const Onboarding = () => {
   }, []);
 
   return (
-    <div className="font-sans">
+    <div className="font-default">
       <h1 className="text-heading-lg-mobile md:text-heading-lg text-gray-90 mb-6">온보딩</h1>
       <h2 className="text-title-lg text-gray-70 mb-4">
         모아용 온보딩 페이지, 아주 친절하지.

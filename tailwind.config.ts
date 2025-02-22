@@ -85,7 +85,7 @@ export default {
         'caption-sm': ['10px', { lineHeight: '130%', letterSpacing: '0', fontWeight: '500' }],
       },
       fontFamily: {
-        sans: ['Pretendard', 'sans-serif'],
+        default: ['Pretendard', 'sans-serif'],
       },
     },
   },
