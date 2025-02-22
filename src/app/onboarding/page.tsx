@@ -11,11 +11,13 @@ const Onboarding = () => {
   }, []);
 
   return (
-    <div>
-      <h1 className="gray-0">온보딩</h1>
-      <h2>모아용 온보딩 페이지, 아주 친절하지.</h2>
-      <h2>{alertText}</h2>
-    </div>
+    <div className="font-sans">
+      <h1 className="text-heading-lg-mobile md:text-heading-lg text-gray-90 mb-6">온보딩</h1>
+      <h2 className="text-title-lg text-gray-70 mb-4">
+        모아용 온보딩 페이지, 아주 친절하지.
+      </h2>
+      <h2 className="text-body-lg text-purple-60">{alertText}</h2>
+  </div>
   );
 };
 
