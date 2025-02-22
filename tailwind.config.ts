@@ -54,6 +54,39 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      fontSize: {
+        /** Heading */
+        'heading-lg': ['48px', { lineHeight: '120%', letterSpacing: '-2%', fontWeight: '600' }],
+        'heading-lg-mobile': ['32px', { lineHeight: '120%', letterSpacing: '-2%', fontWeight: '600' }],
+        'heading-md': ['40px', { lineHeight: '120%', letterSpacing: '-2%', fontWeight: '600' }],
+        'heading-md-mobile': ['28px', { lineHeight: '120%', letterSpacing: '-2%', fontWeight: '600' }],
+        'heading-sm': ['32px', { lineHeight: '130%', letterSpacing: '-2%', fontWeight: '600' }],
+        'heading-sm-mobile': ['24px', { lineHeight: '130%', letterSpacing: '-2%', fontWeight: '600' }],
+
+        /** Title */
+        'title-xl': ['32px', { lineHeight: '130%', letterSpacing: '-2%', fontWeight: '500' }],
+        'title-xl-mobile': ['24px', { lineHeight: '130%', letterSpacing: '-2%', fontWeight: '500' }],
+        'title-lg': ['28px', { lineHeight: '130%', letterSpacing: '-2%', fontWeight: '500' }],
+        'title-lg-mobile': ['22px', { lineHeight: '130%', letterSpacing: '-2%', fontWeight: '500' }],
+        
+        /** Body */
+        'body-lg': ['18px', { lineHeight: '140%', letterSpacing: '0', fontWeight: '400' }],
+        'body-md': ['16px', { lineHeight: '140%', letterSpacing: '0', fontWeight: '400' }],
+        'body-sm': ['14px', { lineHeight: '140%', letterSpacing: '0', fontWeight: '400' }],
+
+        /** Label */
+        'label-lg': ['16px', { lineHeight: '130%', letterSpacing: '0', fontWeight: '600' }],
+        'label-md': ['14px', { lineHeight: '130%', letterSpacing: '0', fontWeight: '600' }],
+        'label-sm': ['12px', { lineHeight: '130%', letterSpacing: '0', fontWeight: '600' }],
+
+        /** Caption */
+        'caption-lg': ['14px', { lineHeight: '130%', letterSpacing: '0', fontWeight: '500' }],
+        'caption-md': ['12px', { lineHeight: '130%', letterSpacing: '0', fontWeight: '500' }],
+        'caption-sm': ['10px', { lineHeight: '130%', letterSpacing: '0', fontWeight: '500' }],
+      },
+      fontFamily: {
+        sans: ['Pretendard', 'sans-serif'],
+      },
     },
   },
   plugins: [animate],
