@@ -11,7 +11,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        // TODO: Grey 컬러 추가
+        /** Gray 계열 */
+        "gray-0": "#FFFFFF",
+        "gray-5": "#F4F5F6",
+        "gray-10": "#E6E8EA",
+        "gray-20": "#CDD1D5",
+        "gray-30": "#B1B8BE",
+        "gray-40": "#8A949E",
+        "gray-50": "#6D7882",
+        "gray-60": "#58616A",
+        "gray-70": "#464C53",
+        "gray-80": "#33363D",
+        "gray-90": "#1E2124",
+        "gray-100": "#000000",
+
+        /** Red 계열 */
         "red-5": "#FEE9EE",
         "red-10": "#E6E8EA",
         "red-20": "#CDD1D5",
@@ -22,6 +36,8 @@ export default {
         "red-70": "#464C53",
         "red-80": "#C70115",
         "red-90": "#A80115",
+
+        /** Purple 계열 */
         "purple-5": "#F0E7FC",
         "purple-10": "#D4B4FA",
         "purple-20": "#B388F5",
