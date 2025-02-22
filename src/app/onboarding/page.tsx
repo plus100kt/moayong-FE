@@ -12,7 +12,7 @@ const Onboarding = () => {
 
   return (
     <div>
-      <h1>온보딩</h1>
+      <h1 className="gray-0">온보딩</h1>
       <h2>모아용 온보딩 페이지, 아주 친절하지.</h2>
       <h2>{alertText}</h2>
     </div>

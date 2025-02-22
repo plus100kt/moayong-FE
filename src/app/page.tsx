@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useAtom } from "jotai";
 import { usernameAtom, userAtom, isLoggedInAtom } from "src/_store/atoms";
+import { useState } from "react";
 
 export default function Home() {
   const [username, setUsername] = useAtom(usernameAtom);
