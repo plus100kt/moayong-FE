@@ -68,7 +68,7 @@ export default {
         'title-xl-mobile': ['24px', { lineHeight: '130%', letterSpacing: '-2%', fontWeight: '500' }],
         'title-lg': ['28px', { lineHeight: '130%', letterSpacing: '-2%', fontWeight: '500' }],
         'title-lg-mobile': ['22px', { lineHeight: '130%', letterSpacing: '-2%', fontWeight: '500' }],
-        
+
         /** Body */
         'body-lg': ['18px', { lineHeight: '140%', letterSpacing: '0', fontWeight: '400' }],
         'body-md': ['16px', { lineHeight: '140%', letterSpacing: '0', fontWeight: '400' }],
