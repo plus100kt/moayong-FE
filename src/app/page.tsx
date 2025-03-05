@@ -1,6 +1,6 @@
 'use client';
 
-import Image from 'next/image';
+
 import { useAtom } from 'jotai';
 import { usernameAtom, userAtom, isLoggedInAtom } from 'src/_store/atoms';
 import { useState } from 'react';
@@ -13,10 +13,13 @@ export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useAtom(isLoggedInAtom);
 
   return (
-    <div className='grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]'>
+    <div>
       <div>
         <h2>테스트</h2>
-        <Button.Default>Shadcn 테스트 버튼</Button.Default>
+        <Button.Default variant="default" size={'xlarge'} onClick={() => console.log('test')}>Shadcn 테스트 버튼</Button.Default>
+        <Button.Icon>저축 인증하기</Button.Icon>
+
+        <Button.Default variant="secondary" size={'xsmall'}>Primary</Button.Default>
         <TestButton label='테스트' />
       </div>
     </div>
