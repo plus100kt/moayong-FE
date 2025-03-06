@@ -17,7 +17,6 @@ const buttonVariants = cva(
         medium: "min-h-[54px] min-w-[280px] rounded-[16px] label-lg",
         small: "min-h-[54px] min-w-[156px] rounded-[16px] label-lg",
         xsmall: "min-h-[42px] min-w-[75px] rounded-[12px] label-md",
-        icon: "rounded-[16px]",
       },
     },
     defaultVariants: {

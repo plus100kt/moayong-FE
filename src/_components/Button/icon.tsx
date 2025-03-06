@@ -1,15 +1,18 @@
-import Image from 'next/image';
 import Button from 'src/_components/Button';
-import iconCamera from 'src/assets/icon-camera.svg';
+import IconCamera from 'src/assets/icon-camera';
 
 interface IconProps {
   children?: React.ReactNode;
+  disabled?: boolean
+  onClick?: () => void;
 }
 
-const Icon = ({ children }: IconProps) => {
+const Icon = ({ children, disabled = false, onClick }: IconProps) => {
   return (
-    <Button.Default variant="default" size={'large'} className='label-md' onClick={() => console.log('test')}>
-      <Image src={iconCamera} alt="Camera Icon" width={32} height={32} />
+    <Button.Default variant="default" size={'large'} className='label-md' disabled={disabled} onClick={onClick}>
+      <div className="bg-gray-40">
+        <IconCamera width={32} height={32} />
+      </div>
       {children}
     </Button.Default>
   )
