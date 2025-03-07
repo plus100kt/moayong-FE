@@ -32,7 +32,16 @@ export default function Home() {
   const fields: FormField[] = [
     { name: "name", validationRule: z.string().min(2, "이름은 최소 2자 이상이어야 합니다.") },
     { name: "bio", validationRule: z.string().min(10, "자기소개는 최소 10글자 이상이어야 합니다.").max(160, "자기소개는 최대 160글자까지 가능합니다.") },
+    { name: "role", validationRule: z.string().min(1, "역할을 선택해주세요.") },
+    // { name: "terms", validationRule: z.boolean().refine((val) => val === true, { message: "약관에 동의해주세요" }) }
   ];
+
+  const defaultValues = {
+    name: "홍길동",
+    bio: "개발자입니다.",
+    role: "admin",
+    // terms: true,
+  };
 
   const roleOptions = [
     { value: "admin", label: "관리자" },
@@ -44,7 +53,7 @@ export default function Home() {
     <div>
       <h2>테스트</h2>
       <TestButton label="테스트" />
-      <Form.FormRoot fields={fields} onSubmit={onSubmit}>
+      <Form.FormRoot fields={fields} onSubmit={onSubmit} defaultValues={defaultValues} >
         <Form.FormInput name="name" placeholder="이름 입력" />
         <Form.FormInput name="bio" placeholder="자기소개 입력" />
         <Form.SelectBox
