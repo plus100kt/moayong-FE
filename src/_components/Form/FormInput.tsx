@@ -1,6 +1,7 @@
 import { FormItem, FormLabel, FormControl, FormMessage } from "src/components/ui/form";
 import { useFormContext } from "react-hook-form";
 import { Input } from "src/components/ui/input";
+import { cn } from "src/lib/utils";
 
 function FormInput({ name, placeholder }: { name: string; placeholder: string }) {
   const {
@@ -8,14 +9,20 @@ function FormInput({ name, placeholder }: { name: string; placeholder: string })
     formState: { errors }, // formState에서 errors를 가져옴
   } = useFormContext();
 
+  const error = errors[name];
+
   return (
     <FormItem>
-      <FormLabel>{placeholder}</FormLabel> {/* Placeholder를 레이블로 사용 */}
+      <FormLabel className={cn(error ? "text-danger" : "text-green-70")}>
+        {placeholder}</FormLabel>
       <FormControl>
-        <Input {...register(name)} placeholder={placeholder} />
+        <Input {...register(name)} placeholder={placeholder} className={cn(error ? "border-red-50" : "border-green-50")}
+        />
       </FormControl>
       {/* errors 객체에서 해당 필드의 에러 메시지를 가져옴 */}
-      <FormMessage>{errors[name]?.message?.toString()}</FormMessage>
+      <FormMessage className={cn(error ? "text-danger" : "")}>
+        {error?.message?.toString()}
+      </FormMessage>
     </FormItem>
   );
 }

@@ -56,7 +56,7 @@ export function CustomCheckBox({
           )}
         />
       </FormControl>
-      <FormMessage>{errors[name]?.message?.toString()}</FormMessage>
+      {/* <FormMessage>{errors[name]?.message?.toString()}</FormMessage> */}
     </FormItem>
   );
 }
