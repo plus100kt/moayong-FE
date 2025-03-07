@@ -5,7 +5,7 @@ import Button from "../Button";
 
 interface FormField {
   name: string;
-  validationRule: z.ZodString;
+  validationRule: z.ZodTypeAny;
 }
 
 interface FormRootProps {
