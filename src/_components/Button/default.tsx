@@ -7,6 +7,7 @@ import { cn } from 'src/lib/utils';
 
 interface DefaultButtonProps extends Omit<ShadcnButtonProps, 'type'> {
   buttonType?: 'primary' | 'secondary';
+  type?: 'button' | 'submit';
   customStyles?: {
     default?: string;
     hover?: string;
@@ -19,6 +20,7 @@ interface DefaultButtonProps extends Omit<ShadcnButtonProps, 'type'> {
 const DefaultButton: React.FC<DefaultButtonProps> = ({
   children,
   buttonType = 'primary',
+  type = 'button',
   size = 'medium',
   customStyles,
   className,
@@ -42,6 +44,7 @@ const DefaultButton: React.FC<DefaultButtonProps> = ({
       onClick={onClick}
       variant={variant}
       size={size}
+      type={type}
       className={cn(
         // 추가 커스텀 스타일
         customStyles?.default,
