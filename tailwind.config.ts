@@ -51,6 +51,12 @@ export default {
         'purple-70': '#3204AC',
         'purple-80': '#2B0396',
         'purple-90': '#1F0566',
+
+        // System color
+        'danger': '#EC664F',
+        'warning': '#F6C959',
+        'info': '#3D6CC8',
+        'success': '#6AD08C',
       },
       fontFamily: {
         default: ['Pretendard', 'sans-serif'],
