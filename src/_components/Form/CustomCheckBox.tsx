@@ -34,7 +34,7 @@ export function CustomCheckBox({
           render={({ field }) => (
             <div
               className={cn(
-                "border rounded-md flex gap-[33px] items-center",
+                "border rounded-[16px] flex gap-[33px] items-center",
               )}
               style={{
                 border: field.value ? "1px solid #12B76A" : "1px solid #E6E8EA",
