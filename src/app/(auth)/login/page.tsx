@@ -1,8 +1,10 @@
 'use client';
 
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import OAuthButtons from 'src/_components/auth/OAuthButtons';
 import { checkExistingUser } from 'src/_lib/auth';
+import dragon from 'src/assets/images/login-dragon.png'
 
 const LoginPage = () => {
   const router = useRouter();
@@ -22,7 +24,12 @@ const LoginPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1>로그인</h1>
+      <Image src={dragon} alt="" />
+      <p className='leading-9 text-center title-md text-gray-80 mt-[24px]'>
+        모아용과 함께
+        <br />
+        모아용
+      </p>
       <OAuthButtons onSuccess={handleOAuthLoginSuccess} />
     </div>
   );

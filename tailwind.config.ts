@@ -170,42 +170,6 @@ export default {
           letterSpacing: "0",
           fontWeight: "600",
         },
-        ".title-md": {
-          fontSize: "24px",
-          lineHeight: "130%",
-          letterSpacing: "-2%",
-          fontWeight: "500",
-        },
-        ".title-md-mobile": {
-          fontSize: "20px",
-          lineHeight: "130%",
-          letterSpacing: "-2%",
-          fontWeight: "500",
-        },
-        ".title-sm": {
-          fontSize: "18px",
-          lineHeight: "140%",
-          letterSpacing: "0",
-          fontWeight: "600",
-        },
-        ".title-sm-mobile": {
-          fontSize: "18px",
-          lineHeight: "140%",
-          letterSpacing: "0",
-          fontWeight: "600",
-        },
-        ".title-xs": {
-          fontSize: "16px",
-          lineHeight: "140%",
-          letterSpacing: "0",
-          fontWeight: "600",
-        },
-        ".title-xs-mobile": {
-          fontSize: "16px",
-          lineHeight: "140%",
-          letterSpacing: "0",
-          fontWeight: "600",
-        },
 
         // Body Styles
         ".body-lg": {
