@@ -18,7 +18,7 @@ const Icon = ({ children, disabled = false, onClick, className }: IconProps) => 
       disabled={disabled}
       onClick={onClick}
     >
-      <div className="bg-gray-40">
+      <div>
         <IconCamera width={32} height={32} />
       </div>
       {children}
