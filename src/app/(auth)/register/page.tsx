@@ -498,7 +498,7 @@ const RegisterPage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [inputValues, setInputValues] = useState<any>({});
   const totalSlides = 7; // 슬라이드 개수 조정
-  const slideLabels = ['이름', '닉네임', '월 급여', '월 저축 목표', '저축 통장'];
+  const slideLabels = ['이름', '닉네임', '월 급여', '월 저축 목표', '저축 통장', '계좌 번호'];
   const [showReviewPage, setShowReviewPage] = useState(false);
   const [open, setOpen] = useState(false);
   const [savingType, setSavingType] = useState('');
@@ -514,6 +514,12 @@ const RegisterPage = () => {
       setCurrentSlide(currentSlide + 1);
     } else {
       setShowReviewPage(true); // 모든 입력이 끝나면 ReviewPage를 보여줌
+    }
+  };
+
+  const handlePrevSlide = () => {
+    if (currentSlide > 0) {
+      setCurrentSlide(currentSlide - 1);
     }
   };
 
@@ -766,7 +772,7 @@ const RegisterPage = () => {
             )}
           </>
         );
-      case 6:
+      case 6: // 새로운 창이 떠야함 (화면 전체를 덮는 모달 - 통장 인증, 최종 결과)
         return (
           <>
             <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
@@ -867,7 +873,30 @@ const RegisterPage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-2xl font-bold mb-8">회원가입</h1>
+      <button onClick={handlePrevSlide}>{'<'}</button>
+      <div>
+        <span>{currentSlide + 1}</span>
+        <span>/</span>
+        <span>{slideLabels.length}</span>
+      </div>
+      <div className="w-full max-w-md text-left heading-sm">
+        <p className={`${currentSlide === 0 ? "block" : "hidden"}`}>
+          당신의 <br /> 이름을 알려주세요.
+        </p>
+        <p className={`${currentSlide === 1 ? "block" : "hidden"}`}>
+          리그에서 어떤 닉네임으로 <br /> 불러드릴까요?
+        </p>
+        <p className={`${currentSlide === 2 ? "block" : "hidden"}`}>
+          당신의 월 급여는 <br /> 얼마인가요?
+        </p>
+        <p className={`${currentSlide === 3 ? "block" : "hidden"}`}>
+          월 급여의 몇 퍼센트 <br /> 모으시겠어요?
+        </p>
+        <p className={`${currentSlide === 4 ? "block" : "hidden"}`}>
+          저축 챌린지에 쓸 통장을 <br /> 인증해주세요.
+        </p>
+      </div>
+
       {renderSlideContent()}
     </div>
   );

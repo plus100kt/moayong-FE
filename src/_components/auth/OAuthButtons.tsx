@@ -36,7 +36,7 @@ const OAuthButtons = ({ onSuccess }: OAuthButtonsProps) => {
   };
 
   return (
-    <div className="flex flex-col space-y-2 my-[40px]">
+    <div className="flex flex-col gap-[8px] my-[40px]">
       <button onClick={handleGoogleLogin} className="flex items-center bg-gray-0 justify-center gap-[8px] min-w-[320px] min-h-[52px] border rounded-[16px]">
         <Image src={google} alt="" />
         <p className="text-gray-80 label-md">Google로 시작하기</p>
