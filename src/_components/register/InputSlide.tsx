@@ -1,5 +1,5 @@
 // src/app/_components/register/InputSlide.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from 'src/components/ui/button';
 import { Input } from 'src/components/ui/input';
 
@@ -20,8 +20,16 @@ const InputSlide = ({
 }: InputSlideProps) => {
   const [inputValue, setInputValue] = useState(initialValue);
 
+  // 컴포넌트가 마운트되거나 keyName이 변경될 때 inputValue를 초기화
+  useEffect(() => {
+    // keyName이 변경되었다는 것은 다른 슬라이드로 이동했다는 의미
+    setInputValue(initialValue);
+  }, [keyName, initialValue]);
+
   const handleSubmit = () => {
     onNext(keyName, inputValue);
+    // 제출 후 입력값 초기화
+    setInputValue('');
   };
 
   return (

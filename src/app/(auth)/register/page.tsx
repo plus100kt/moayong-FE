@@ -503,6 +503,7 @@ const RegisterPage = () => {
   const [open, setOpen] = useState(false);
   const [savingType, setSavingType] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
+  const [isGoingBack, setIsGoingBack] = useState(false);
 
   const handleNextSlide = (key: any, value: any) => {
     setInputValues((prevValues: any) => ({
@@ -511,6 +512,7 @@ const RegisterPage = () => {
     }));
 
     if (currentSlide < totalSlides - 1) {
+      setIsGoingBack(false);
       setCurrentSlide(currentSlide + 1);
     } else {
       setShowReviewPage(true); // 모든 입력이 끝나면 ReviewPage를 보여줌
@@ -519,9 +521,10 @@ const RegisterPage = () => {
 
   const handlePrevSlide = () => {
     if (currentSlide > 0) {
+      setIsGoingBack(true);
       setCurrentSlide(currentSlide - 1);
     }
-  };
+  }
 
   const handleCompleteRegistration = () => {
     console.log('Registration completed with values:', inputValues);
@@ -546,6 +549,9 @@ const RegisterPage = () => {
   };
 
   const renderSlideContent = () => {
+    const slideDirection = isGoingBack ? { opacity: 0, y: 50 } : { opacity: 1, y: 0 };
+    const slideAnimate = isGoingBack ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 };
+
     switch (currentSlide) {
       case 0:
         return (
@@ -558,8 +564,8 @@ const RegisterPage = () => {
             />
             {Object.keys(inputValues).length > 0 && (
               <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={slideDirection}
+                animate={slideAnimate}
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
                 className="flex flex-col-reverse"
               >
