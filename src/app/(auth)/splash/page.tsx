@@ -3,6 +3,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { cn } from 'src/lib/utils';
+import { motion } from 'framer-motion';
+import icon from 'src/assets/icon-splash.svg';
+import Image from 'next/image';
 
 const SplashPage = () => {
   const router = useRouter();
@@ -13,24 +16,31 @@ const SplashPage = () => {
     const timer = setTimeout(() => {
       setLoading(false);
       router.push('/login');
-    }, 2000000);
+    }, 2000);
 
     return () => clearTimeout(timer); // 컴포넌트 언마운트 시 타이머 제거
   }, [router]);
 
+  const splashVariants = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1, transition: { duration: 0.5 } },
+    exit: { opacity: 0, transition: { duration: 0.5 } },
+  };
+
   return (
-    <div
+    <motion.div
       className={cn(
         'flex flex-col items-start justify-center h-screen', // 좌측 정렬
         'bg-green-50 text-gray-0',
         loading ? 'opacity-100' : 'opacity-0 transition-opacity duration-500' // 페이드 아웃 효과
       )}
+      variants={splashVariants}
+      initial="initial"
+      animate={loading ? 'animate' : 'exit'}
     >
       {/* 따옴표 */}
       <div className="mb-[17px] ml-[36px]">
-        <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9.55224 15V8.47826C9.61194 3.97233 11.1642 1.83795 12.7761 0.830039C13.791 0.296442 14.8657 0 15.9403 0V2.84585C13.0746 2.84585 12.5373 6.28459 12.5373 8.47826H16V15H9.55224ZM0 15V8.47826C0.0597016 3.97233 1.61194 1.83795 3.22388 0.830039C4.23881 0.296442 5.31343 0 6.38806 0V2.84585C3.52239 2.84585 2.98507 6.28459 2.98507 8.47826H6.44776V15H0Z" fill="white" />
-        </svg>
+        <Image src={icon} alt="Splash Icon" width={16} height={15} />
       </div>
 
       {/* 인용구 */}
@@ -57,7 +67,7 @@ const SplashPage = () => {
       <div className="text-center text-gray-10 absolute bottom-4 w-full body-sm">
         ©MOAYONG
       </div>
-    </div>
+    </motion.div>
   );
 };
 
