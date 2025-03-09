@@ -11,6 +11,7 @@ import { Sheet, SheetContent, SheetTrigger } from 'src/components/ui/sheet';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'src/components/ui/select';
 import Image from 'next/image';
 import backbar from 'src/assets/appbar.svg'
+import x from 'src/assets/icon-x.svg'
 import AccountVerification from 'src/_components/register/AccountVerification';
 import PassbookVerification from 'src/_components/register/PassbookVerification';
 
@@ -415,14 +416,19 @@ const RegisterPage = () => {
     <div className="flex flex-col items-left justify-start overflow-auto pb-[20px]">
       <div className='h-[50px] w-full flex items-center pl-[9px]'>
         <button onClick={handlePrevSlide}>
-          <Image src={backbar} alt="" />
+          <Image src={currentSlide > 5 ? x : backbar} alt="" />
         </button>
+        <p className='title-sm text-gray-80 text-center w-full ml-[-36px]'>통장인증</p>
       </div>
-      <div className='pl-[20px] mb-1 mt-[40px]'>
-        <span>{currentSlide + 1}</span>
-        <span>/</span>
-        <span>{slideLabels.length}</span>
-      </div>
+      {
+        currentSlide <= 5 && (
+          <div className='pl-[20px] mb-1 mt-[40px] label-sm'>
+            <span className='text-gray-80 mr-1'>{currentSlide + 1}</span>
+            <span className='text-gray-30'>/</span>
+            <span className='text-gray-30'>{slideLabels.length}</span>
+          </div>
+        )
+      }
       <div className="w-full max-w-md text-left heading-sm mb-[32px] pl-[20px]">
         <p className={`${currentSlide === 0 ? "block" : "hidden"}`}>
           당신의 <br /> 이름을 알려주세요.

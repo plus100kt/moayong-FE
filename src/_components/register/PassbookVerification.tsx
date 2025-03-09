@@ -34,7 +34,7 @@ const PassbookVerification = () => {
             className="rounded-lg border border-gray-200 overflow-hidden"
           />
         ) : (
-          <label className="w-full flex title-xs items-center justify-center text-gray-50 cursor-pointer">
+          <label className="w-full flex title-xs items-center justify-center text-gray-50 cursor-pointer  w-[320px] h-[280px]">
             <div className="flex flex-col items-center justify-center">
               <Image
                 src={upload}
