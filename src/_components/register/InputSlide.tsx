@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from 'src/components/ui/button';
 import { Input } from 'src/components/ui/input';
-import { Slider } from "src/components/ui/slider"
+import { Slider } from "src/components/ui/slider";
 import { cn } from 'src/lib/utils';
 
 interface InputSlideProps {
@@ -10,6 +10,7 @@ interface InputSlideProps {
   type?: string;
   onNext: (key: string, value: string) => void;
   initialValue?: string;
+  salary?: string | number;
 }
 
 const InputSlide = ({
@@ -18,12 +19,25 @@ const InputSlide = ({
   type = 'text',
   onNext,
   initialValue = '',
+  salary
 }: InputSlideProps) => {
   const [inputValue, setInputValue] = useState(initialValue);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
   const [sliderValue, setSliderValue] = useState(0);
   // 월급을 상수로 먼저 정의
-  const monthlySalary = Number(initialValue);
+  const monthlySalary = Number(salary) || 0; // 기본값 0 추가
+
+  // useEffect를 통해 initialValue가 변경될 때마다 슬라이더와 inputValue를 업데이트
+  useEffect(() => {
+    if (initialValue) {
+      const sliderMatch = initialValue.match(/(\d+)%/); // 텍스트 내에서 퍼센트를 추출
+      if (sliderMatch) {
+        setSliderValue(Number(sliderMatch[1]));
+      }
+      setInputValue(initialValue);
+      console.log(initialValue, sliderMatch)
+    }
+  }, [initialValue]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -39,10 +53,6 @@ const InputSlide = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  useEffect(() => {
-    setInputValue(initialValue);
-  }, [keyName, initialValue]);
-
   const handleSubmit = () => {
     onNext(keyName, inputValue);
     setInputValue('');
@@ -50,13 +60,28 @@ const InputSlide = ({
 
   const isSavingsGoal = label === "월 저축 목표:";  // "월 저축 목표"일 때 슬라이더 표시
 
-  // 계산된 저축액
-  const savingsAmount = Math.floor((sliderValue / 100) * monthlySalary);
+  // 계산된 저축액 - 반올림 문제 해결을 위해 Math.ceil 사용하거나 소수점 고려
+  const calculateSavingsAmount = (percentage: number) => {
+    if (percentage === 0) return 0;
+
+    // 정확한 계산값
+    const exactAmount = (percentage / 100) * monthlySalary;
+
+    // 매우 작은 금액에 대한 처리 개선
+    if (exactAmount < 1 && exactAmount > 0) {
+      return 1; // 최소 1원 반환
+    }
+
+    return Math.round(exactAmount); // Math.floor 대신 Math.round 사용
+  };
+
+  // 저축액 계산
+  const savingsAmount = calculateSavingsAmount(sliderValue);
 
   const handleSliderChange = (value: number[]) => {
     const newSliderValue = value[0];
     // 새 값으로 직접 계산
-    const newSavingsAmount = Math.floor((newSliderValue / 100) * monthlySalary);
+    const newSavingsAmount = calculateSavingsAmount(newSliderValue);
 
     // 상태 업데이트
     setSliderValue(newSliderValue);
@@ -100,9 +125,6 @@ const InputSlide = ({
     }
   };
 
-  // 슬라이더의 초기값이 0일 때 툴팁에 저축액 0원이 표시되도록
-  const displayedSavingsAmount = savingsAmount > 0 ? savingsAmount : 0;
-
   return (
     <div className="w-full flex flex-col items-start justify-center px-4 mb-[49px]">
       <label className="text-green-50 label-md mb-1">
@@ -133,7 +155,7 @@ const InputSlide = ({
           >
             {/* 툴팁 내용 */}
             <div className="bg-gray-50 text-gray-0 title-xs px-[14px] py-[8px] rounded-md shadow-md z-10 whitespace-nowrap">
-              월 {displayedSavingsAmount.toLocaleString()} 원
+              월 {savingsAmount.toLocaleString()} 원
 
               {/* 화살표 - 별도 포지셔닝 */}
               <div

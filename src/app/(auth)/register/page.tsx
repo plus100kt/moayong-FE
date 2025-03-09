@@ -672,7 +672,8 @@ const RegisterPage = () => {
               keyName="savingGoal"
               type="number"
               onNext={handleNextSlide}
-              initialValue={inputValues.savingGoal ? inputValues.savingGoal : inputValues.salary}
+              initialValue={inputValues.savingGoal}
+              salary={inputValues.salary}
             />
             {Object.keys(inputValues).length > 0 && (
               <motion.div
