@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import InputSlide from 'src/_components/register/InputSlide';
 import { motion } from 'framer-motion';
@@ -123,6 +123,12 @@ const RegisterPage = () => {
     router.push('/'); // 완료 후 루트 페이지로 이동
   };
 
+  useEffect(() => {
+    // 이미지 업로드 후 OCR 결과에서 계좌 번호를 초기화
+    if (inputValues['imageUploded']?.ocrResult?.accountNumber) {
+      setOcrAccountNumber(inputValues['imageUploded'].ocrResult.accountNumber);
+    }
+  }, [inputValues['imageUploded']?.ocrResult?.accountNumber]);
 
   const renderSlideContent = () => {
     const slideDirection = isGoingBack ? { opacity: 0, y: 50 } : { opacity: 1, y: 0 };
