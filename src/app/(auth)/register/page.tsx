@@ -19,7 +19,7 @@ const RegisterPage = () => {
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [inputValues, setInputValues] = useState<any>({});
-  const totalSlides = 8; // 슬라이드 개수 조정
+  const totalSlides = 8;
   const slideLabels = ['이름', '닉네임', '월 급여', '월 저축 목표', '저축 통장', '계좌 번호', '이미지 업로드', '완료'];
   const [showReviewPage, setShowReviewPage] = useState(false);
   const [open, setOpen] = useState(false);
@@ -42,9 +42,15 @@ const RegisterPage = () => {
   };
 
   const handlePrevSlide = () => {
+    if (currentSlide === 7) {
+      setIsGoingBack(true);
+      setCurrentSlide(5);
+      return;
+    }
     if (currentSlide > 0) {
       setIsGoingBack(true);
       setCurrentSlide(currentSlide - 1);
+      return;
     }
   }
 
@@ -86,12 +92,13 @@ const RegisterPage = () => {
             />
             {Object.keys(inputValues).length > 0 && (
               <motion.div
-                initial={slideDirection}
-                animate={slideAnimate}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
                 className="flex flex-col-reverse"
               >
                 {Object.keys(inputValues).map((key, index) => (
+                  index < 1 &&
                   <motion.div
                     key={key}
                     className="mb-4"
@@ -122,12 +129,13 @@ const RegisterPage = () => {
             />
             {Object.keys(inputValues).length > 0 && (
               <motion.div
-                initial={{ opacity: 0, y: 50 }}
+                initial={{ opacity: 0, y: -30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
                 className="flex flex-col-reverse"
               >
                 {Object.keys(inputValues).map((key, index) => (
+                  index < 2 &&
                   <motion.div
                     key={key}
                     className="mb-4"
@@ -165,6 +173,7 @@ const RegisterPage = () => {
                 className="flex flex-col-reverse"
               >
                 {Object.keys(inputValues).map((key, index) => (
+                  index < 3 &&
                   <motion.div
                     key={key}
                     className="mb-4"
@@ -203,6 +212,7 @@ const RegisterPage = () => {
                 className="flex flex-col-reverse"
               >
                 {Object.keys(inputValues).map((key, index) => (
+                  index < 4 &&
                   <motion.div
                     key={key}
                     className="mb-4"
@@ -239,6 +249,7 @@ const RegisterPage = () => {
                 className="flex flex-col-reverse"
               >
                 {Object.keys(inputValues).map((key, index) => (
+                  index < 5 &&
                   <motion.div
                     key={key}
                     className="mb-4"
@@ -288,6 +299,7 @@ const RegisterPage = () => {
                 className="flex flex-col-reverse"
               >
                 {Object.keys(inputValues).map((key, index) => (
+                  index < 6 &&
                   <motion.div
                     key={key}
                     className="mb-4"
@@ -321,6 +333,41 @@ const RegisterPage = () => {
           <>
             <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
               <h2 className="text-xl font-bold mb-6 text-center">입력 내용 확인</h2>
+
+              {/* 이미지 렌더링 */}
+              {inputValues.imageUploded?.imageDataURL && (
+                <div className="mb-4 relative">
+                  <Image
+                    src={inputValues.imageUploded.imageDataURL}
+                    alt="Uploaded Passbook"
+                    width={320}
+                    height={240}
+                    className="rounded-lg"
+                  />
+                  {/* 하이라이트 박스 렌더링 */}
+                  {inputValues.imageUploded.ocrResult?.highlightBoxes?.map((box: any, index: any) => (
+                    <div
+                      key={index}
+                      style={{
+                        position: 'absolute',
+                        top: box.y,
+                        left: box.x,
+                        width: box.width,
+                        height: box.height,
+                        border: '2px solid red', // 하이라이트 색상
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {/* 계좌 번호 렌더링 */}
+              {inputValues.imageUploded?.ocrResult?.accountNumber && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">계좌 번호 (OCR):</span>
+                  <span className="font-medium">{inputValues.imageUploded.ocrResult.accountNumber}</span>
+                </div>
+              )}
 
               <div className="space-y-4">
                 <div className="flex justify-between">
@@ -421,7 +468,9 @@ const RegisterPage = () => {
         <button onClick={handlePrevSlide} className='z-10'>
           <Image src={currentSlide > 5 ? x : backbar} alt="" />
         </button>
-        <p className='title-sm text-gray-80 text-center w-full ml-[-36px]'>통장인증</p>
+        {
+          currentSlide === 5 && <p className='title-sm text-gray-80 text-center w-full ml-[-36px]'>통장인증</p>
+        }
       </div>
       {
         currentSlide <= 5 && (
