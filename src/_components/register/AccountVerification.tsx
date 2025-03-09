@@ -128,7 +128,7 @@ const AccountVerification = ({
   };
 
   return (
-    <div className="w-full flex flex-col items-start justify-center px-4 mb-[49px]">
+    <div className="w-full flex flex-col items-start justify-center px-4 mb-[35px]">
       <label className="text-green-50 label-md mb-3">
         {label}
       </label>
