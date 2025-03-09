@@ -44,7 +44,7 @@ const RegisterPage = () => {
   };
 
   const handlePrevSlide = () => {
-    if (currentSlide === 7) {
+    if (currentSlide >= 7) {
       setIsGoingBack(true);
       setCurrentSlide(5);
       return;
@@ -119,7 +119,8 @@ const RegisterPage = () => {
   const handleRegistrationComplete = () => {
     // 가입 완료 후 처리할 로직 (예: 팝업 표시, 페이지 이동)
     alert("가입이 완료되었습니다!");
-    router.push('/'); // 예시: onboarding 페이지로 이동
+    handleCompleteRegistration() // 완료 팝업에서 누르면 실행됨
+    router.push('/'); // 완료 후 루트 페이지로 이동
   };
 
 
@@ -527,7 +528,10 @@ const RegisterPage = () => {
                           </div>
                         </div>
                         <div className="flex items-center justify-center p-[20px]">
-                          <Button size={"large"} onClick={handleUpdateAccount}>수정 완료</Button>
+                          <Button size={"large"} onClick={() => {
+                            handleUpdateAccount()
+                            handlePrevSlide()
+                          }}>수정 완료</Button>
                         </div>
                       </div>
                     </SheetContent>
@@ -572,7 +576,9 @@ const RegisterPage = () => {
                       </div>
                     </SheetContent> */}
                   </Sheet>
-                  <Button size={"small"} onClick={handleCompleteRegistration}>
+                  <Button size={"small"} onClick={() => {
+                    handlePrevSlide()
+                  }}>
                     인증완료
                   </Button>
                 </div>
@@ -598,9 +604,13 @@ const RegisterPage = () => {
       {
         currentSlide <= 5 && (
           <div className='pl-[20px] mb-1 mt-[40px] label-sm'>
-            <span className='text-gray-80 mr-1'>{currentSlide + 1}</span>
+            <span className='text-gray-80 mr-1'>{currentSlide + 1 > 5 ? 5 : currentSlide + 1}</span>
             <span className='text-gray-30'>/</span>
-            <span className='text-gray-30'>{slideLabels.length}</span>
+            <span className='text-gray-30'>
+              {/* TODO: 정책 협의 */}
+              {/* {slideLabels.length} */}
+              5
+            </span>
           </div>
         )
       }
