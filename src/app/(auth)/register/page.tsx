@@ -494,6 +494,7 @@ import { Sheet, SheetContent, SheetTrigger } from 'src/components/ui/sheet';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'src/components/ui/select';
 import Image from 'next/image';
 import backbar from 'src/assets/appbar.svg'
+import AccountVerification from 'src/_components/register/AccountVerification';
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -739,10 +740,16 @@ const RegisterPage = () => {
           </>
         );
       case 5:
-        // 통장 인증 페이지 (간단하게 버튼만)
         return (
           <>
-            <div className="flex flex-col space-y-4">
+            <AccountVerification
+              label="계좌번호:"
+              keyName="account"
+              type="number"
+              onClick={() => handleNextSlide('imageUploaded', true)} onNext={() => { }}
+              initialValue={inputValues.savingGoal}
+            />
+            {/* <div className="flex flex-col space-y-4">
               <label className="block text-sm font-medium">계좌번호 입력</label>
               <Input
                 type="text"
@@ -753,7 +760,7 @@ const RegisterPage = () => {
               <Button onClick={() => handleNextSlide('imageUploaded', true)}>
                 통장 인증 완료
               </Button>
-            </div>
+            </div> */}
             {Object.keys(inputValues).length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 50 }}
