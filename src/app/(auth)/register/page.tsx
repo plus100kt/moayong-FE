@@ -19,8 +19,8 @@ const RegisterPage = () => {
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [inputValues, setInputValues] = useState<any>({});
-  const totalSlides = 7; // 슬라이드 개수 조정
-  const slideLabels = ['이름', '닉네임', '월 급여', '월 저축 목표', '저축 통장', '계좌 번호'];
+  const totalSlides = 8; // 슬라이드 개수 조정
+  const slideLabels = ['이름', '닉네임', '월 급여', '월 저축 목표', '저축 통장', '계좌 번호', '이미지 업로드', '완료'];
   const [showReviewPage, setShowReviewPage] = useState(false);
   const [open, setOpen] = useState(false);
   const [savingType, setSavingType] = useState('');
@@ -265,7 +265,7 @@ const RegisterPage = () => {
               label="계좌번호:"
               keyName="account"
               type="number"
-              onClick={() => handleNextSlide('imageUploaded', true)} onNext={() => { }}
+              onClick={() => handleNextSlide('uploadImage', false)} onNext={() => { }}
               initialValue={inputValues.savingGoal}
             />
             {/* <div className="flex flex-col space-y-4">
@@ -310,7 +310,10 @@ const RegisterPage = () => {
       case 6: // 새로운 창이 떠야함 (화면 전체를 덮는 모달 - 통장 인증, 최종 결과)
         return (
           <>
-            <PassbookVerification />
+            <PassbookVerification
+              keyName="imageUploded"
+              onClick={handleNextSlide}
+            />
           </>
         );
       case 7: // 새로운 창이 떠야함 (화면 전체를 덮는 모달 - 통장 인증, 최종 결과)
@@ -415,7 +418,7 @@ const RegisterPage = () => {
   return (
     <div className="flex flex-col items-left justify-start overflow-auto pb-[20px]">
       <div className='h-[50px] w-full flex items-center pl-[9px]'>
-        <button onClick={handlePrevSlide}>
+        <button onClick={handlePrevSlide} className='z-10'>
           <Image src={currentSlide > 5 ? x : backbar} alt="" />
         </button>
         <p className='title-sm text-gray-80 text-center w-full ml-[-36px]'>통장인증</p>
