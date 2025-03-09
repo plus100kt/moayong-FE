@@ -492,6 +492,8 @@ import { Button } from 'src/components/ui/button';
 import { Input } from 'src/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from 'src/components/ui/sheet';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'src/components/ui/select';
+import Image from 'next/image';
+import backbar from 'src/assets/appbar.svg'
 
 const RegisterPage = () => {
   const router = useRouter();
@@ -577,10 +579,10 @@ const RegisterPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <label className="block text-sm font-medium text-gray-500">
+                    <label className="block text-sm font-medium mx-[20px] label-md mb-1 text-gray-70">
                       {slideLabels[index]}
                     </label>
-                    <div className="mt-1 text-gray-500 border-b border-gray-500 py-2">
+                    <div className="text-gray-50 border-b border-gray-30 mx-[20px] title-md pb-1">
                       {String(inputValues[key])}
                     </div>
                   </motion.div>
@@ -613,10 +615,10 @@ const RegisterPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <label className="block text-sm font-medium text-gray-500">
+                    <label className="block text-sm font-medium mx-[20px] label-md mb-1 text-gray-70">
                       {slideLabels[index]}
                     </label>
-                    <div className="mt-1 text-gray-500 border-b border-gray-500 py-2">
+                    <div className="text-gray-50 border-b border-gray-30 mx-[20px] title-md pb-1">
                       {String(inputValues[key])}
                     </div>
                   </motion.div>
@@ -650,10 +652,10 @@ const RegisterPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <label className="block text-sm font-medium text-gray-500">
+                    <label className="block text-sm font-medium mx-[20px] label-md mb-1 text-gray-70">
                       {slideLabels[index]}
                     </label>
-                    <div className="mt-1 text-gray-500 border-b border-gray-500 py-2">
+                    <div className="text-gray-50 border-b border-gray-30 mx-[20px] title-md pb-1">
                       {String(inputValues[key])}
                     </div>
                   </motion.div>
@@ -666,11 +668,11 @@ const RegisterPage = () => {
         return (
           <>
             <InputSlide
-              label="월 저축 목표를 입력하세요:"
+              label="월 저축 목표:"
               keyName="savingGoal"
               type="number"
               onNext={handleNextSlide}
-              initialValue={inputValues.savingGoal}
+              initialValue={inputValues.savingGoal ? inputValues.savingGoal : inputValues.salary}
             />
             {Object.keys(inputValues).length > 0 && (
               <motion.div
@@ -687,10 +689,10 @@ const RegisterPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <label className="block text-sm font-medium text-gray-500">
+                    <label className="block text-sm font-medium mx-[20px] label-md mb-1 text-gray-70">
                       {slideLabels[index]}
                     </label>
-                    <div className="mt-1 text-gray-500 border-b border-gray-500 py-2">
+                    <div className="text-gray-50 border-b border-gray-30 mx-[20px] title-md pb-1">
                       {String(inputValues[key])}
                     </div>
                   </motion.div>
@@ -723,10 +725,10 @@ const RegisterPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <label className="block text-sm font-medium text-gray-500">
+                    <label className="block text-sm font-medium mx-[20px] label-md mb-1 text-gray-70">
                       {slideLabels[index]}
                     </label>
-                    <div className="mt-1 text-gray-500 border-b border-gray-500 py-2">
+                    <div className="text-gray-50 border-b border-gray-30 mx-[20px] title-md pb-1">
                       {String(inputValues[key])}
                     </div>
                   </motion.div>
@@ -766,10 +768,10 @@ const RegisterPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
                   >
-                    <label className="block text-sm font-medium text-gray-500">
+                    <label className="block text-sm font-medium mx-[20px] label-md mb-1 text-gray-70 mt-[8px]">
                       {slideLabels[index]}
                     </label>
-                    <div className="mt-1 text-gray-500 border-b border-gray-500 py-2">
+                    <div className="text-gray-50 border-b border-gray-30 mx-[20px] title-md pb-1">
                       {String(inputValues[key])}
                     </div>
                   </motion.div>
@@ -878,14 +880,20 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <button onClick={handlePrevSlide}>{'<'}</button>
-      <div>
+    // <div className="flex flex-col items-left justify-start h-screen">
+    <div className="flex flex-col items-left justify-start h-[calc(100vh-94px)] overflow-auto">
+
+      <div className='h-[50px] w-full flex items-center pl-[9px]'>
+        <button onClick={handlePrevSlide}>
+          <Image src={backbar} alt="" />
+        </button>
+      </div>
+      <div className='pl-[20px] mb-1 mt-[40px]'>
         <span>{currentSlide + 1}</span>
         <span>/</span>
         <span>{slideLabels.length}</span>
       </div>
-      <div className="w-full max-w-md text-left heading-sm">
+      <div className="w-full max-w-md text-left heading-sm mb-[32px] pl-[20px]">
         <p className={`${currentSlide === 0 ? "block" : "hidden"}`}>
           당신의 <br /> 이름을 알려주세요.
         </p>
