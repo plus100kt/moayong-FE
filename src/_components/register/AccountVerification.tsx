@@ -12,6 +12,8 @@ interface InputSlideProps {
   initialValue?: string;
   salary?: string | number;
   onClick?: (ocrResult: any) => void;
+  allDataPresent?: boolean
+  handleSccess?: () => void
 }
 
 const AccountVerification = ({
@@ -21,7 +23,9 @@ const AccountVerification = ({
   onClick,
   onNext,
   initialValue = '',
-  salary
+  salary,
+  allDataPresent,
+  handleSccess
 }: InputSlideProps) => {
   const [inputValue, setInputValue] = useState(initialValue);
   const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
@@ -37,7 +41,6 @@ const AccountVerification = ({
         setSliderValue(Number(sliderMatch[1]));
       }
       setInputValue(initialValue);
-      console.log(initialValue, sliderMatch)
     }
   }, [initialValue]);
 
@@ -194,13 +197,21 @@ const AccountVerification = ({
         </div>
       )}
 
-      <Button
-        size={isKeyboardOpen ? "xlarge" : "large"}
-        onClick={handleSubmit}
-        className={cn('fixed left-1/2 -translate-x-1/2', isKeyboardOpen ? "bottom-0" : 'bottom-5 ')}
-      >
-        다음
-      </Button>
+      {
+        allDataPresent ? <Button
+          size={isKeyboardOpen ? "xlarge" : "large"}
+          onClick={handleSccess}
+          className={cn('fixed left-1/2 -translate-x-1/2', isKeyboardOpen ? "bottom-0" : 'bottom-5 ')}
+        >
+          가입 완료
+        </Button> : <Button
+          size={isKeyboardOpen ? "xlarge" : "large"}
+          onClick={handleSubmit}
+          className={cn('fixed left-1/2 -translate-x-1/2', isKeyboardOpen ? "bottom-0" : 'bottom-5 ')}
+        >
+          다음
+        </Button>
+      }
       {/* <p className='mt-[16px] label-sm text-gray-70'>안내텍스트</p> */}
     </div>
   );

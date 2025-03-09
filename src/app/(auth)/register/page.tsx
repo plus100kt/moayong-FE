@@ -21,6 +21,7 @@ const RegisterPage = () => {
   const [inputValues, setInputValues] = useState<any>({});
   const totalSlides = 8;
   const slideLabels = ['이름', '닉네임', '월 급여', '월 저축 목표', '저축 통장', '계좌 번호', '이미지 업로드', '완료'];
+  const keys = ["name", "nickname", "salary", "savingGoal", "savingType", "account", "imageUploded"];
   const [showReviewPage, setShowReviewPage] = useState(false);
   const [open, setOpen] = useState(false);
   const [savingType, setSavingType] = useState('');
@@ -56,7 +57,6 @@ const RegisterPage = () => {
   }
 
   const handleCompleteRegistration = () => {
-    console.log('Registration completed with values:', inputValues);
     router.push('/onboarding');
   };
 
@@ -106,6 +106,20 @@ const RegisterPage = () => {
       };
     });
     setOpen(false);
+  };
+  const allDataPresent = Object.keys(inputValues).length > 0 && Object.keys(inputValues).every((key) => {
+    return keys.every((key) => {
+      if (key === 'account' || key === 'imageUploded') {
+        return inputValues['imageUploded']?.ocrResult?.accountNumber
+      }
+      return inputValues[key];
+    })
+  });
+
+  const handleRegistrationComplete = () => {
+    // 가입 완료 후 처리할 로직 (예: 팝업 표시, 페이지 이동)
+    alert("가입이 완료되었습니다!");
+    router.push('/'); // 예시: onboarding 페이지로 이동
   };
 
 
@@ -311,6 +325,8 @@ const RegisterPage = () => {
               type="number"
               onClick={(ocrResult) => handleNextSlide('imageUploded', ocrResult)}
               onNext={() => { }}
+              handleSccess={handleRegistrationComplete}
+              allDataPresent={allDataPresent}
               initialValue={inputValues.savingGoal}
             />
             {/* <div className="flex flex-col space-y-4">
