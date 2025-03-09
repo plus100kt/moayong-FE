@@ -26,6 +26,7 @@ const RegisterPage = () => {
   const [savingType, setSavingType] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [isGoingBack, setIsGoingBack] = useState(false);
+  const [ocrAccountNumber, setOcrAccountNumber] = useState('');
 
   const handleNextSlide = (key: any, value: any) => {
     setInputValues((prevValues: any) => ({
@@ -66,15 +67,47 @@ const RegisterPage = () => {
     setOpen(true);
   };
 
+  // const handleUpdateAccount = () => {
+  //   // 바텀시트에서 수정된 정보로 업데이트
+  //   setInputValues((prevValues: any) => ({
+  //     ...prevValues,
+  //     savingType,
+  //     accountNumber: ocrAccountNumber,
+  //   }));
+  //   setOpen(false);
+  // };
   const handleUpdateAccount = () => {
     // 바텀시트에서 수정된 정보로 업데이트
-    setInputValues((prevValues: any) => ({
-      ...prevValues,
-      savingType,
-      accountNumber,
-    }));
+    setInputValues((prevValues: any) => {
+      // 1. imageUploded가 있는지 확인
+      if (!prevValues.imageUploded || !prevValues.imageUploded.ocrResult) {
+        console.error("imageUploded 또는 ocrResult가 없습니다.");
+        return prevValues; // 이전 상태를 그대로 반환
+      }
+
+      // 2. ocrResult 객체 복사 (불변성 유지)
+      const updatedOcrResult = {
+        ...prevValues.imageUploded.ocrResult,
+        accountNumber: ocrAccountNumber, // 계좌번호 업데이트
+      };
+
+      // 3. imageUploded 객체 복사 (불변성 유지)
+      const updatedImageUploded = {
+        ...prevValues.imageUploded,
+        ocrResult: updatedOcrResult, // ocrResult 업데이트
+      };
+
+      // 4. 최종적으로 inputValues 업데이트
+      return {
+        ...prevValues,
+        savingType,
+        imageUploded: updatedImageUploded, // imageUploded 업데이트
+        accountNumber: ocrAccountNumber, // accountNumber 업데이트 (optional)
+      };
+    });
     setOpen(false);
   };
+
 
   const renderSlideContent = () => {
     const slideDirection = isGoingBack ? { opacity: 0, y: 50 } : { opacity: 1, y: 0 };
@@ -276,7 +309,8 @@ const RegisterPage = () => {
               label="계좌번호:"
               keyName="account"
               type="number"
-              onClick={() => handleNextSlide('uploadImage', false)} onNext={() => { }}
+              onClick={(ocrResult) => handleNextSlide('imageUploded', ocrResult)}
+              onNext={() => { }}
               initialValue={inputValues.savingGoal}
             />
             {/* <div className="flex flex-col space-y-4">
@@ -311,7 +345,7 @@ const RegisterPage = () => {
                       {slideLabels[index]}
                     </label>
                     <div className="text-gray-50 border-b border-gray-30 mx-[20px] title-md pb-1">
-                      {String(inputValues[key])}
+                      {inputValues[key]?.ocrResult?.accountNumber ? String(inputValues[key]?.ocrResult?.accountNumber) : String(inputValues[key])}
                     </div>
                   </motion.div>
                 ))}
@@ -444,10 +478,44 @@ const RegisterPage = () => {
                   <Sheet open={open} onOpenChange={setOpen}>
                     <SheetTrigger asChild>
                       <Button size={"small"} variant="secondary" onClick={handleEditAccountInfo}>
-                        계좌 정보 수정하기
+                        수정하기
                       </Button>
                     </SheetTrigger>
-                    <SheetContent side="bottom" className="sm:max-w-full">
+                    <SheetContent side="bottom" className="sm:max-w-full border-t border-[#EDEFF1] h-[405px] bg-white p-[20px] rounded-t-xl">
+                      <div className="h-1 w-[60px] bg-[#EDEFF1] mx-auto rounded-full mb-[20px]"></div>
+                      <div className="flex flex-col h-full justify-between">
+                        <div className="mt-[15px]">
+                          <h3 className='text-gray-80 title-sm mb-[24px]'>계좌 수정하기</h3>
+                          <div>
+                            <span className='label-md text-gray-70'>저축 통장</span>
+                            <Select onValueChange={setSavingType} defaultValue={inputValues.savingType}>
+                              <SelectTrigger>
+                                <SelectValue placeholder="선택하세요" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="정기 예금">정기 예금</SelectItem>
+                                <SelectItem value="자유 적금">자유 적금</SelectItem>
+                                <SelectItem value="체크 통장">체크 통장</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className='mt-[24px]'>
+                            <span className='label-md text-gray-70'>계좌번호</span>
+                            <Input
+                              type="text"
+                              id="account-number"
+                              placeholder="계좌 번호를 입력하세요"
+                              value={ocrAccountNumber}
+                              onChange={(e) => setOcrAccountNumber(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-center p-[20px]">
+                          <Button size={"large"} onClick={handleUpdateAccount}>수정 완료</Button>
+                        </div>
+                      </div>
+                    </SheetContent>
+                    {/* <SheetContent side="bottom" className="sm:max-w-full">
                       <div className="flex flex-col h-full justify-between">
                         <div className="px-6 py-4">
                           <h2 className="text-lg font-semibold">계좌 정보 수정</h2>
@@ -486,10 +554,10 @@ const RegisterPage = () => {
                           <Button onClick={handleUpdateAccount}>수정 완료</Button>
                         </div>
                       </div>
-                    </SheetContent>
+                    </SheetContent> */}
                   </Sheet>
                   <Button size={"small"} onClick={handleCompleteRegistration}>
-                    가입 완료
+                    인증완료
                   </Button>
                 </div>
               </div>

@@ -11,7 +11,7 @@ interface InputSlideProps {
   onNext: (key: string, value: string) => void;
   initialValue?: string;
   salary?: string | number;
-  onClick?: () => void;
+  onClick?: (ocrResult: any) => void;
 }
 
 const AccountVerification = ({
@@ -177,7 +177,7 @@ const AccountVerification = ({
         <div className="relative w-full">
           <Input
             type={"button"}
-            value={inputValue || "통장을 인증해주세요."}
+            value={"통장을 인증해주세요."}
             placeholder="통장을 인증해주세요."
             onChange={(e) => setInputValue(e.target.value)}
             className="w-full text-left text-gray-50 placeholder-gray-50 border-t-0 border-l-0 border-r-0 rounded-none shadow-none focus:outline-none 
