@@ -28,6 +28,7 @@ const PassbookVerification = ({ onClick, keyName }: {
         // OCR 분석 결과 (목데이터)
         const ocrResult = {
           accountNumber: '123-456-7890', // 가짜 계좌번호
+          bankBalance: '50000',
           highlightBoxes: [
             { x: 50, y: 100, width: 200, height: 30 }, // 가짜 위치 정보
             { x: 100, y: 150, width: 150, height: 25 },

@@ -331,19 +331,32 @@ const RegisterPage = () => {
       case 7: // 새로운 창이 떠야함 (화면 전체를 덮는 모달 - 통장 인증, 최종 결과)
         return (
           <>
-            <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+            <div className="w-full">
               <h2 className="text-xl font-bold mb-6 text-center">입력 내용 확인</h2>
 
               {/* 이미지 렌더링 */}
               {inputValues.imageUploded?.imageDataURL && (
-                <div className="mb-4 relative">
+                <div className="flex justify-center relative">
+                  {/* 
+                    object-position: center center; (기본값) — 이미지를 중앙에 맞춤
+                    object-position: left top; — 이미지를 왼쪽 상단에 맞춤
+                    object-position: right bottom; — 이미지를 오른쪽 하단에 맞춤
+                    object-position: 50% 50%; — 이미지를 중앙에 맞춤 (중간값)
+                    object-position: 0px 0px; — 왼쪽 상단에 맞춤 (픽셀값으로도 설정 가능)
+                  */}
                   <Image
                     src={inputValues.imageUploded.imageDataURL}
                     alt="Uploaded Passbook"
                     width={320}
                     height={240}
-                    className="rounded-lg"
+                    // TODO: w-[320], h-[280px] w-fit, h-fit 시안 논의
+                    className="rounded-[16px] w-[320px] h-[280px] object-cover mb-[24px] shadow-lg"
+                    style={{
+                      objectPosition: '50% 15%',
+                      boxShadow: '0 0px 1px #CDD1D5, 0 4px 2px #CDD1D5',
+                    }}
                   />
+
                   {/* 하이라이트 박스 렌더링 */}
                   {inputValues.imageUploded.ocrResult?.highlightBoxes?.map((box: any, index: any) => (
                     <div
@@ -361,15 +374,36 @@ const RegisterPage = () => {
                 </div>
               )}
 
-              {/* 계좌 번호 렌더링 */}
-              {inputValues.imageUploded?.ocrResult?.accountNumber && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">계좌 번호 (OCR):</span>
-                  <span className="font-medium">{inputValues.imageUploded.ocrResult.accountNumber}</span>
-                </div>
-              )}
+              <div className="w-[320px] h-[149px] bg-gray-5 rounded-[16px] p-[20px] mx-auto">
+                {/* 인증 내역 제목 */}
+                <div className="title-sm text-gray-90 mb-[16px]">인증 내역</div>
 
-              <div className="space-y-4">
+                {/* 구분선 */}
+                <div className="border-t-[1px] border-b-[1px] border-gray-10 my-[16px]" />
+
+                {/* 계좌 번호 렌더링 */}
+                {inputValues.imageUploded?.ocrResult?.accountNumber && (
+                  <div className="flex justify-left mb-[8px] gap-[4px]">
+                    <span className="text-gray-80 title-xs">계좌 번호</span>
+                    <span className="body-md text-gray-80">
+                      {inputValues.imageUploded.ocrResult.accountNumber}
+                    </span>
+                  </div>
+                )}
+
+                {/* 통장 잔액 렌더링 */}
+                {inputValues.imageUploded?.ocrResult?.bankBalance && (
+                  <div className="flex justify-left gap-[4px]">
+                    <span className="text-gray-80 title-xs">통장 잔액</span>
+                    <span className="body-md text-gray-80">
+                      {Number(inputValues.imageUploded.ocrResult.bankBalance).toLocaleString()} 원
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* TODO: 정보 렌더링 협의 */}
+              {/* <div className="space-y-4">
                 <div className="flex justify-between">
                   <span className="text-gray-600">이름:</span>
                   <span className="font-medium">{inputValues.name}</span>
@@ -399,60 +433,65 @@ const RegisterPage = () => {
                   <span className="text-gray-600">계좌 번호:</span>
                   <span className="font-medium">{inputValues.accountNumber}</span>
                 </div>
-              </div>
+              </div> */}
+              <div className="fixed bottom-[20px] left-0 right-0">
+                <div className='flex flex-col justify-center items-center'>
+                  <p className='title-xs text-gray-80'>김모아님 통장 계좌번호와</p>
+                  <p className='title-xs text-gray-80'>잔액이 맞는지 다시 한번 확인해주세요.</p>
+                </div>
 
-              <div className="mt-8 space-y-3">
-                <Button className="w-full" onClick={handleCompleteRegistration}>
-                  가입 완료
-                </Button>
-
-                <Sheet open={open} onOpenChange={setOpen}>
-                  <SheetTrigger asChild>
-                    <Button variant="secondary" className="w-full" onClick={handleEditAccountInfo}>
-                      계좌 정보 수정하기
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent side="bottom" className="sm:max-w-full">
-                    <div className="flex flex-col h-full justify-between">
-                      <div className="px-6 py-4">
-                        <h2 className="text-lg font-semibold">계좌 정보 수정</h2>
-                        <p className="text-sm text-gray-500">정확한 계좌 정보를 입력해주세요.</p>
-                      </div>
-                      <div className="px-6 py-4 space-y-4">
-                        <div className="grid gap-2">
-                          <label htmlFor="saving-type" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                            저축 통장
-                          </label>
-                          <Select onValueChange={setSavingType} defaultValue={inputValues.savingType}>
-                            <SelectTrigger>
-                              <SelectValue placeholder="선택하세요" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="정기 예금">정기 예금</SelectItem>
-                              <SelectItem value="자유 적금">자유 적금</SelectItem>
-                              <SelectItem value="체크 통장">체크 통장</SelectItem>
-                            </SelectContent>
-                          </Select>
+                <div className="flex justify-center gap-[4px] mt-[24px]">
+                  <Sheet open={open} onOpenChange={setOpen}>
+                    <SheetTrigger asChild>
+                      <Button size={"small"} variant="secondary" onClick={handleEditAccountInfo}>
+                        계좌 정보 수정하기
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="bottom" className="sm:max-w-full">
+                      <div className="flex flex-col h-full justify-between">
+                        <div className="px-6 py-4">
+                          <h2 className="text-lg font-semibold">계좌 정보 수정</h2>
+                          <p className="text-sm text-gray-500">정확한 계좌 정보를 입력해주세요.</p>
                         </div>
-                        <div className="grid gap-2">
-                          <label htmlFor="account-number" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                            계좌 번호
-                          </label>
-                          <Input
-                            type="text"
-                            id="account-number"
-                            placeholder="계좌 번호를 입력하세요"
-                            value={accountNumber}
-                            onChange={(e) => setAccountNumber(e.target.value)}
-                          />
+                        <div className="px-6 py-4 space-y-4">
+                          <div className="grid gap-2">
+                            <label htmlFor="saving-type" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                              저축 통장
+                            </label>
+                            <Select onValueChange={setSavingType} defaultValue={inputValues.savingType}>
+                              <SelectTrigger>
+                                <SelectValue placeholder="선택하세요" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="정기 예금">정기 예금</SelectItem>
+                                <SelectItem value="자유 적금">자유 적금</SelectItem>
+                                <SelectItem value="체크 통장">체크 통장</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="grid gap-2">
+                            <label htmlFor="account-number" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                              계좌 번호
+                            </label>
+                            <Input
+                              type="text"
+                              id="account-number"
+                              placeholder="계좌 번호를 입력하세요"
+                              value={accountNumber}
+                              onChange={(e) => setAccountNumber(e.target.value)}
+                            />
+                          </div>
+                        </div>
+                        <div className="flex items-center justify-center p-6">
+                          <Button onClick={handleUpdateAccount}>수정 완료</Button>
                         </div>
                       </div>
-                      <div className="flex items-center justify-center p-6">
-                        <Button onClick={handleUpdateAccount}>수정 완료</Button>
-                      </div>
-                    </div>
-                  </SheetContent>
-                </Sheet>
+                    </SheetContent>
+                  </Sheet>
+                  <Button size={"small"} onClick={handleCompleteRegistration}>
+                    가입 완료
+                  </Button>
+                </div>
               </div>
             </div>
           </>
@@ -469,7 +508,7 @@ const RegisterPage = () => {
           <Image src={currentSlide > 5 ? x : backbar} alt="" />
         </button>
         {
-          currentSlide === 5 && <p className='title-sm text-gray-80 text-center w-full ml-[-36px]'>통장인증</p>
+          currentSlide >= 5 && <p className='title-sm text-gray-80 text-center w-full ml-[-36px]'>통장인증</p>
         }
       </div>
       {
