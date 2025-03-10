@@ -109,3 +109,106 @@
     --chart-5: 340 75% 55%
   }
 }
+
+/* 캘린더 커스텀 */
+
+.react-calendar {
+  width: 100%;
+  max-width: 400px;
+  /* 적절한 최대 너비 설정 */
+  border: none;
+  font-family: 'SUIT Variable', sans-serif;
+  /* SUIT 폰트 적용 */
+  line-height: 1.125em;
+}
+
+.react-calendar__navigation {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.react-calendar__navigation button {
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: #667085;
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.react-calendar__navigation button:disabled {
+  background-color: #f0f0f0;
+  cursor: default;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: #e6e6e6;
+}
+
+.react-calendar__month-view__weekdays {
+  abbr[title] {
+    text-decoration: none;
+  }
+
+  font-size: 0.9em;
+  font-weight: 500;
+  color: #667085;
+}
+
+.react-calendar__tile {
+  background: none;
+  border: none;
+  padding: 0.75em 0.5em;
+  text-align: center;
+  font-size: 0.9em;
+  color: #344054;
+}
+
+.react-calendar__tile:disabled {
+  color: #a0aec0;
+  background-color: #f0f0f0;
+  cursor: default;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  background-color: #e6e6e6;
+}
+
+.react-calendar__tile--now {
+  background: #e2e8f0;
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  background: #d3dce6;
+}
+
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+  background: #d3dce6;
+}
+
+.react-calendar__tile--active {
+  background: #6b48ff;
+  color: white;
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  background: #6b48ff;
+}
+
+.react-calendar__tile--attendance {
+  background-color: #50CD89 !important;
+  border-radius: 50% !important;
+  color: white;
+  position: relative;
+}
+
+.react-calendar__tile--currentWeek {
+  background-color: #E8F5E9 !important;
+  border-radius: 50% !important;
+}
