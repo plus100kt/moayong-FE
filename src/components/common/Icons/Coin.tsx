@@ -62,8 +62,8 @@ export const Coin = ({
                 id="Vector 977"
                 d="M0.25 11.25L22.75 11.25"
                 stroke="#FFCB2E"
-                stroke-width="2"
-                stroke-linecap="round"
+                strokeWidth="2"
+                strokeLinecap="round"
               />
               <path
                 id="Vector 978"
