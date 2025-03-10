@@ -557,8 +557,19 @@ const RegisterPage = () => {
                               placeholder="계좌 번호를 입력하세요"
                               value={ocrAccountNumber}
                               onChange={(e) => setOcrAccountNumber(e.target.value)}
+                              className="pb-[12px] border-b border-[#B1B8BE] border-x-transparent border-t-transparent shadow-none rounded-none title-md text-gray-50 pl-0 py-4"
                             />
                           </div>
+                          {/* <div className='mt-[24px]'>
+                            <span className='label-md text-gray-70'>계좌번호</span>
+                            <Input
+                              type="text"
+                              id="account-number"
+                              placeholder="계좌 번호를 입력하세요"
+                              value={ocrAccountNumber}
+                              onChange={(e) => setOcrAccountNumber(e.target.value)}
+                            />
+                          </div> */}
                         </div>
                         <div className="flex items-center justify-center p-[20px]">
                           <Button size={"large"} onClick={() => {
