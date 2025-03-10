@@ -5,6 +5,7 @@ import { usernameAtom, isLoggedInAtom } from "src/_store/atoms";
 import TestButton from "src/_components/TestButton";
 import Form from "src/_components/Form";
 import * as z from "zod";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "src/components/ui/select";
 
 
 interface FormField {
@@ -49,10 +50,20 @@ export default function Sample() {
     { value: "editor", label: "편집자" },
   ];
 
+  const banks = [
+    { name: "KB국민은행", logo: "#" },
+    { name: "신한은행", logo: "#" },
+    { name: "우리은행", logo: "#" },
+    { name: "KEB하나은행", logo: "#" },
+    { name: "카카오뱅크", logo: "#" },
+    { name: "케이뱅크", logo: "#" },
+    { name: "토스", logo: "#" }
+  ];
+
   return (
     <div>
       <h2>테스트</h2>
-      <TestButton label="테스트" />
+      {/* <TestButton label="테스트" />
       <Form.FormRoot fields={fields} onSubmit={onSubmit} defaultValues={defaultValues} >
         <Form.FormInput name="name" placeholder="이름 입력" />
         <Form.FormInput name="bio" placeholder="자기소개 입력" />
@@ -68,8 +79,29 @@ export default function Sample() {
             <span className="text-gray-60 label-lg">위 내용을 모두 확인했습니다.</span>
           </p>
         } />
-      </Form.FormRoot>
+      </Form.FormRoot> */}
+      <Select onValueChange={() => { }} defaultValue="신한은행">
+        <SelectTrigger className="pb-[12px] border-b border-[#B1B8BE] border-x-transparent border-t-transparent shadow-none rounded-none title-md text-gray-50 pl-0 py-6">
+          <SelectValue placeholder="선택하세요" />
+        </SelectTrigger>
+        <SelectContent>
+          {banks.map((bank) => (
+            <SelectItem key={bank.name} value={bank.name} className="flex items-center cursor-pointer hover:bg-gray-5 active:bg-gray-10 rounded-[16px] py-[10px]">
+              <div
+                key={bank.name}
+                className="flex items-center ursor-pointer hover:bg-gray-5 active:bg-gray-10 rounded-[16px] py-[10px]"
+              >
+                <div className="w-[32px] h-[32px] bg-gray-300 flex items-center justify-center rounded-full">
+                  {/* 은행 로고 자리 */}
+                  <span className="text-sm">🏦</span>
+                </div>
+                <span className="ml-4 text-gray-50 body-md">{bank.name}</span>
+              </div>
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
       {/* <Form.Ex /> */}
-    </div>
+    </div >
   );
 }

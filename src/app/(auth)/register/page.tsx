@@ -116,6 +116,16 @@ const RegisterPage = () => {
     })
   });
 
+  const banks = [
+    { name: "KB국민은행", logo: "#" },
+    { name: "신한은행", logo: "#" },
+    { name: "우리은행", logo: "#" },
+    { name: "KEB하나은행", logo: "#" },
+    { name: "카카오뱅크", logo: "#" },
+    { name: "케이뱅크", logo: "#" },
+    { name: "토스", logo: "#" }
+  ];
+
   const handleRegistrationComplete = () => {
     // 가입 완료 후 처리할 로직 (예: 팝업 표시, 페이지 이동)
     alert("가입이 완료되었습니다!");
@@ -512,13 +522,24 @@ const RegisterPage = () => {
                           <div>
                             <span className='label-md text-gray-70'>저축 통장</span>
                             <Select onValueChange={setSavingType} defaultValue={inputValues.savingType}>
-                              <SelectTrigger>
+                              <SelectTrigger className="pb-[12px] border-b border-[#B1B8BE] border-x-transparent border-t-transparent shadow-none rounded-none title-md text-gray-50 pl-0 py-6">
                                 <SelectValue placeholder="선택하세요" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="정기 예금">정기 예금</SelectItem>
-                                <SelectItem value="자유 적금">자유 적금</SelectItem>
-                                <SelectItem value="체크 통장">체크 통장</SelectItem>
+                                {banks.map((bank) => (
+                                  <SelectItem key={bank.name} value={bank.name} className="flex items-center cursor-pointer hover:bg-gray-5 active:bg-gray-10 rounded-[16px] py-[10px]">
+                                    <div
+                                      key={bank.name}
+                                      className="flex items-center ursor-pointer hover:bg-gray-5 active:bg-gray-10 rounded-[16px] py-[10px]"
+                                    >
+                                      <div className="w-[32px] h-[32px] bg-gray-300 flex items-center justify-center rounded-full">
+                                        {/* 은행 로고 자리 */}
+                                        <span className="text-sm">🏦</span>
+                                      </div>
+                                      <span className="ml-4 text-gray-50 body-md">{bank.name}</span>
+                                    </div>
+                                  </SelectItem>
+                                ))}
                               </SelectContent>
                             </Select>
                           </div>
