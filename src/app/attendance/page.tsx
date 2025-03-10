@@ -1,15 +1,40 @@
 'use client';
 
 import AttendanceCalendar from "src/_components/AttendanceCalendar";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import Button from "src/_components/Button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import backbar from 'src/assets/appbar.svg'
 import megaphone from 'src/assets/images/icon-megaphone.png'
+import fire from 'src/assets/images/icon-fire.png'
+import calendar from 'src/assets/images/icon-calendar.png'
 
 const AttendancePage = () => {
   const router = useRouter();
+  const [attendanceDates, setAttendanceDates] = useState<Date[]>([
+    new Date(2025, 4, 5),
+    new Date(2025, 4, 7),
+    new Date(2025, 4, 8),
+  ]);
+  const [date, setDate] = useState<Date>(new Date());
+
+  const handleAttendanceCheck = useCallback(() => {
+    const today = new Date();
+    const formattedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+    // 이미 출석한 날짜인지 확인
+    const alreadyAttended = attendanceDates.some(
+      (attendedDate) =>
+        attendedDate.getFullYear() === formattedToday.getFullYear() &&
+        attendedDate.getMonth() === formattedToday.getMonth() &&
+        attendedDate.getDate() === formattedToday.getDate()
+    );
+
+    if (!alreadyAttended) {
+      setAttendanceDates((prevDates) => [...prevDates, formattedToday]);
+    }
+  }, [attendanceDates]);
 
   return (
     <div className="flex flex-col items-center h-screen bg-white">
@@ -30,24 +55,39 @@ const AttendancePage = () => {
       </div>
 
       {/* Attendance Info */}
-      <div className="flex justify-around w-full p-4">
-        <div className="flex flex-col items-center">
-          <div className="text-gray-500">연속 출석일</div>
-          <div className="text-2xl font-bold">18일</div>
+      <div className="flex w-full justify-center gap-[12px]">
+        <div className="flex flex-col items-start justify-end pl-[16px] pb-[25px] w-[154px] h-[100px] bg-gray-5 rounded-[16px]">
+          <div className="flex gap-[10px] items-center">
+            <Image src={calendar} alt="" />
+            <div className="flex flex-col items-start">
+              <div className="text-gray-60 caption-md">연속 출석일</div>
+              <div className="text-gray-70 title-lg">18일</div>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col items-center">
-          <div className="text-gray-500">최대 연속 출석일</div>
-          <div className="text-2xl font-bold">53일</div>
+        <div className="flex flex-col items-start justify-end pl-[16px] pb-[25px] w-[154px] h-[100px] bg-gray-5 rounded-[16px]">
+          <div className="flex gap-[10px] items-center">
+            <Image src={fire} alt="" />
+            <div className="flex flex-col items-start">
+              <div className="text-gray-60 caption-md">최대 연속 출석일</div>
+              <div className="text-danger title-lg">53일</div>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Calendar */}
       <div className="w-full p-4">
-        <AttendanceCalendar />
+        <AttendanceCalendar
+          attendanceDates={attendanceDates}
+          currentDate={date}
+          setDate={setDate}
+        />
       </div>
 
       {/* Button */}
-      <Button.Default size={"large"}>
+      <Button.Default size={"large"} onClick={handleAttendanceCheck}
+      >
         출석 체크 도장 찍기 +5p
       </Button.Default>
     </div>
