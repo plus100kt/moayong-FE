@@ -73,24 +73,12 @@ export default {
       addComponents({
         // Heading Styles
         ".heading-lg": {
-          fontSize: "48px",
-          lineHeight: "120%",
-          letterSpacing: "-2%",
-          fontWeight: "600",
-        },
-        ".heading-lg-mobile": {
           fontSize: "32px",
           lineHeight: "120%",
           letterSpacing: "-2%",
           fontWeight: "600",
         },
         ".heading-md": {
-          fontSize: "40px",
-          lineHeight: "120%",
-          letterSpacing: "-2%",
-          fontWeight: "600",
-        },
-        ".heading-md-mobile": {
           fontSize: "28px",
           lineHeight: "120%",
           letterSpacing: "-2%",
@@ -102,45 +90,21 @@ export default {
           letterSpacing: "-2%",
           fontWeight: "600",
         },
-        ".heading-sm-mobile": {
-          fontSize: "24px",
-          lineHeight: "130%",
-          letterSpacing: "-2%",
-          fontWeight: "600",
-        },
 
         // Title Styles
         ".title-xl": {
-          fontSize: "32px",
-          lineHeight: "130%",
-          letterSpacing: "-2%",
-          fontWeight: "500",
-        },
-        ".title-xl-mobile": {
           fontSize: "24px",
           lineHeight: "130%",
           letterSpacing: "-2%",
           fontWeight: "500",
         },
         ".title-lg": {
-          fontSize: "28px",
-          lineHeight: "130%",
-          letterSpacing: "-2%",
-          fontWeight: "500",
-        },
-        ".title-lg-mobile": {
           fontSize: "22px",
           lineHeight: "130%",
           letterSpacing: "-2%",
           fontWeight: "500",
         },
         ".title-md": {
-          fontSize: "24px",
-          lineHeight: "130%",
-          letterSpacing: "-2%",
-          fontWeight: "500",
-        },
-        ".title-md-mobile": {
           fontSize: "20px",
           lineHeight: "130%",
           letterSpacing: "-2%",
@@ -152,55 +116,7 @@ export default {
           letterSpacing: "0",
           fontWeight: "600",
         },
-        ".title-sm-mobile": {
-          fontSize: "18px",
-          lineHeight: "140%",
-          letterSpacing: "0",
-          fontWeight: "600",
-        },
         ".title-xs": {
-          fontSize: "16px",
-          lineHeight: "140%",
-          letterSpacing: "0",
-          fontWeight: "600",
-        },
-        ".title-xs-mobile": {
-          fontSize: "16px",
-          lineHeight: "140%",
-          letterSpacing: "0",
-          fontWeight: "600",
-        },
-        ".title-md": {
-          fontSize: "24px",
-          lineHeight: "130%",
-          letterSpacing: "-2%",
-          fontWeight: "500",
-        },
-        ".title-md-mobile": {
-          fontSize: "20px",
-          lineHeight: "130%",
-          letterSpacing: "-2%",
-          fontWeight: "500",
-        },
-        ".title-sm": {
-          fontSize: "18px",
-          lineHeight: "140%",
-          letterSpacing: "0",
-          fontWeight: "600",
-        },
-        ".title-sm-mobile": {
-          fontSize: "18px",
-          lineHeight: "140%",
-          letterSpacing: "0",
-          fontWeight: "600",
-        },
-        ".title-xs": {
-          fontSize: "16px",
-          lineHeight: "140%",
-          letterSpacing: "0",
-          fontWeight: "600",
-        },
-        ".title-xs-mobile": {
           fontSize: "16px",
           lineHeight: "140%",
           letterSpacing: "0",
@@ -265,6 +181,28 @@ export default {
           lineHeight: "130%",
           letterSpacing: "0",
           fontWeight: "500",
+        },
+
+
+        /* ✅ md(768px) 이상에서 데스크톱 스타일 적용 */
+        "@media (min-width: 768px)": {
+          ".heading-lg": { fontSize: "48px", lineHeight: "120%" },
+          ".heading-md": { fontSize: "40px", lineHeight: "120%" },
+          ".heading-sm": { fontSize: "32px", lineHeight: "130%" },
+          ".title-xl": { fontSize: "32px", lineHeight: "130%" },
+          ".title-lg": { fontSize: "28px", lineHeight: "130%" },
+          ".title-md": { fontSize: "24px", lineHeight: "130%" },
+          ".title-sm": { fontSize: "18px", lineHeight: "140%" },
+          ".title-xs": { fontSize: "16px", lineHeight: "140%" },
+          ".body-lg": { fontSize: "18px", lineHeight: "140%" },
+          ".body-md": { fontSize: "16px", lineHeight: "140%" },
+          ".body-sm": { fontSize: "14px", lineHeight: "140%" },
+          ".label-lg": { fontSize: "16px", lineHeight: "130%" },
+          ".label-md": { fontSize: "14px", lineHeight: "130%" },
+          ".label-sm": { fontSize: "12px", lineHeight: "130%" },
+          ".caption-lg": { fontSize: "14px", lineHeight: "130%" },
+          ".caption-md": { fontSize: "12px", lineHeight: "130%" },
+          ".caption-sm": { fontSize: "10px", lineHeight: "130%" },
         },
       });
     },
