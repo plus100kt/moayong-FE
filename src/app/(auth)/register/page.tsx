@@ -378,7 +378,13 @@ const RegisterPage = () => {
                       {slideLabels[index]}
                     </label>
                     <div className="text-gray-50 border-b border-gray-30 mx-[20px] title-md pb-1">
-                      {inputValues[key]?.ocrResult?.accountNumber ? String(inputValues[key]?.ocrResult?.accountNumber) : String(inputValues[key])}
+                      {
+                        inputValues[key]?.ocrResult?.accountNumber
+                          ? String(inputValues[key]?.ocrResult?.accountNumber)
+                          : typeof inputValues[key] === "object" && inputValues[key] !== null
+                            ? ""
+                            : String(inputValues[key]) || ""
+                      }
                     </div>
                   </motion.div>
                 ))}
