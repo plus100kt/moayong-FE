@@ -6,6 +6,7 @@ import Button from "src/_components/Button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import backbar from 'src/assets/appbar.svg'
+import megaphone from 'src/assets/images/icon-megaphone.png'
 
 const AttendancePage = () => {
   const router = useRouter();
@@ -22,7 +23,8 @@ const AttendancePage = () => {
       </div>
       {/* Header */}
       <div className="w-full p-4">
-        <div className="bg-gray-100 rounded-lg p-3 text-sm text-gray-600">
+        <div className="caption-md py-[18px] px-[14px] bg-gray-10 rounded-[14px] text-gray-90 flex items-center gap-[10px]">
+          <Image src={megaphone} alt="" />
           [리그 공지] 리그 종료까지 2시간 10분 남았어요!
         </div>
       </div>
