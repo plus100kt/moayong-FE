@@ -77,7 +77,7 @@ const AttendancePage = () => {
       </div>
 
       {/* Calendar */}
-      <div className="w-full p-4">
+      <div className="mx-auto flex items-center">
         <AttendanceCalendar
           attendanceDates={attendanceDates}
           currentDate={date}
