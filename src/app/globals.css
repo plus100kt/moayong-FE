@@ -128,6 +128,7 @@
   margin-bottom: 1em;
 }
 
+/* 중앙 텍스트 */
 .react-calendar__navigation button {
   background: none;
   border: none;
@@ -211,4 +212,64 @@
 .react-calendar__tile--currentWeek {
   background-color: #E8F5E9 !important;
   border-radius: 50% !important;
+}
+
+/* hover 시 색상 변경 */
+.custom-calendar .react-calendar__navigation__arrow:hover {
+  color: #00A99D;
+
+}
+
+/* 달력 상단 네비게이션 전체 스타일 */
+.custom-calendar .react-calendar__navigation {
+  display: flex;
+  justify-content: center;
+  /* 중앙 정렬 */
+  align-items: center;
+  /* 폰트 크기 */
+  font-weight: bold;
+  /* 텍스트 색상 */
+  color: #33363D;
+  font-size: 14px !important;
+  line-height: 130%;
+  letter-spacing: -2%;
+  font-weight: 600;
+  width: 186px;
+  padding: 0;
+  margin: 0 0 10px -20px;
+}
+
+@media (min-width: 768px) {
+  .custom-calendar .react-calendar__navigation {
+    font-size: 24px;
+    line-height: 130%;
+  }
+}
+
+.custom-calendar .react-calendar__navigation__label {
+  margin-top: 6px;
+}
+
+
+/* 좌우 이동 버튼 ( <, > ) 스타일 */
+.custom-calendar .react-calendar__navigation__arrow {
+  font-size: 28px;
+  /* 버튼 크기 */
+  color: #B1B8BE;
+  /* 기본 색상 */
+  transition: color 0.2s ease-in-out;
+  padding: 0;
+  width: 6px !important;
+  font-weight: 100;
+}
+
+.react-calendar__navigation__arrow {
+  background-color: #00A99D;
+  width: 6px !important;
+}
+
+/* 버튼 hover 시 색상 변경 */
+.custom-calendar .react-calendar__navigation__arrow:hover {
+  color: #00A99D;
+  /* 원하는 색상 */
 }

@@ -45,28 +45,29 @@ const AttendanceCalendar = ({ attendanceDates, currentDate, setDate }: Attendanc
   };
 
   // 날짜 안에 표시할 내용
-  const tileContent = ({ date, view }: TileArgs): React.ReactNode => {
-    if (view === 'month') {
-      const formattedDate = formatDate(date);
-      const attendanceFormattedDates = attendanceDates.map(formatDate);
+  /**
+   * 달력의 날짜 안에 추가적인 내용을 렌더링하기 위해 사용
+   */
+  // const tileContent = ({ date, view }: TileArgs): React.ReactNode => {
+  //   if (view === 'month') {
+  //     const formattedDate = formatDate(date);
+  //     const attendanceFormattedDates = attendanceDates.map(formatDate);
 
-      if (attendanceFormattedDates.includes(formattedDate)) {
-        return (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center bg-green-500">
-            {date.getDate()}
-          </div>
-        );
-      } else if (date < new Date()) {
-        // 출석하지 않은 과거 날짜에 회색 표시
-        return (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-500 text-xs rounded-full w-6 h-6 flex items-center justify-center bg-gray-200">
-            {date.getDate()}
-          </div>
-        );
-      }
-    }
-    return null;
-  };
+  //     if (attendanceFormattedDates.includes(formattedDate)) {
+  //       return (
+  //         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center bg-green-500">
+  //           {date.getDate()}
+  //         </div>
+  //       );
+  //     } else if (date < new Date()) {
+  //       // 출석하지 않은 과거 날짜에 회색 표시
+  //       return (
+  //         <></>
+  //       );
+  //     }
+  //   }
+  //   return null;
+  // };
 
   // 날짜 선택 시 상태 업데이트
   const onChange = (newDate: Value, event: React.MouseEvent<HTMLButtonElement>) => {
@@ -81,7 +82,15 @@ const AttendanceCalendar = ({ attendanceDates, currentDate, setDate }: Attendanc
       value={currentDate}
       locale="ko-KR"
       tileClassName={tileClassName}
-      tileContent={tileContent}
+      // tileContent={tileContent}
+      className={"border-none custom-calendar"}
+      navigationLabel={({ date }) =>
+        `${date.getFullYear()}년 ${date.getMonth() + 1}월`
+      }
+      next2Label={null}  // >> 버튼 제거
+      prev2Label={null}  // << 버튼 제거
+    // nextLabel={null}   // > 버튼 제거
+    // prevLabel={null}   // < 버튼 제거
     />
   );
 };
