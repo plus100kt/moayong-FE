@@ -228,14 +228,15 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 32px;
+  width: 33px;
   /* 넓이를 키워서 타원형으로 */
   height: 38px;
   /* 높이는 줄여서 타원형을 만들기 */
   background-color: #50CD89;
-  border-radius: 46%;
+  border-radius: 65% 67% 55% 67%;
+  /* 비대칭적인 border-radius로 찌그러짐을 더 자연스럽게 */
   /* 타원형 형태로 만드는 border-radius */
-  transform: translate(-50%, -50%) rotate(10deg);
+  transform: translate(-50%, -50%) rotate(5deg);
   /* 알 모양처럼 약간 찌그러지게 회전 */
   z-index: 1;
 }
