@@ -47,15 +47,13 @@ const AttendancePage = () => {
         <p className='title-sm text-gray-80 text-center w-full ml-[-36px]'>출석체크</p>
       </div>
       {/* Header */}
-      <div className="w-full p-4">
-        <div className="caption-md py-[18px] px-[14px] bg-gray-10 rounded-[14px] text-gray-90 flex items-center gap-[10px]">
-          <Image src={megaphone} alt="" />
-          [리그 공지] 리그 종료까지 2시간 10분 남았어요!
-        </div>
+      <div className="w-[320px] mb-[14px] caption-md py-[18px] px-[14px] bg-gray-10 rounded-[14px] text-gray-90 flex items-center gap-[10px]">
+        <Image src={megaphone} alt="" />
+        [리그 공지] 리그 종료까지 2시간 10분 남았어요!
       </div>
 
       {/* Attendance Info */}
-      <div className="flex w-full justify-center gap-[12px]">
+      <div className="flex w-full justify-center gap-[12px] mb-[40px]">
         <div className="flex flex-col items-start justify-end pl-[16px] pb-[25px] w-[154px] h-[100px] bg-gray-5 rounded-[16px]">
           <div className="flex gap-[10px] items-center">
             <Image src={calendar} alt="" />
@@ -77,7 +75,7 @@ const AttendancePage = () => {
       </div>
 
       {/* Calendar */}
-      <div className="mx-auto flex items-center">
+      <div className="mx-auto flex items-center w-[320px]">
         <AttendanceCalendar
           attendanceDates={attendanceDates}
           currentDate={date}
