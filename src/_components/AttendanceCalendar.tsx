@@ -20,68 +20,23 @@ const AttendanceCalendar = ({ attendanceDates, currentDate, setDate }: Attendanc
     return `${year}-${month}-${day}`;
   };
 
-  /**
-    setUTCHours(0, 0, 0, 0)을 사용하여 시간까지 00:00:00.000으로 맞춤.
-    → date >= currentWeekStart && date <= currentWeekEnd 비교 시 불일치 문제 해결
+  // 오늘 날짜 (시간 제외)
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-    currentWeekStart와 currentWeekEnd를 setHours(0, 0, 0, 0)로 보정
-    → new Date()는 기본적으로 시간까지 포함하므로, 이를 맞춰야 정확한 비교가 가능
-   */
-  // const tileClassName = ({ date, view }: TileArgs): string | null => {
-  //   if (view === 'month') {
-  //     const formattedDate = formatDate(date);
-  //     const attendanceFormattedDates = attendanceDates.map(formatDate);
-
-  //     if (attendanceFormattedDates.includes(formattedDate)) {
-  //       return 'react-calendar__tile--attendance';
-  //     }
-
-  //     // // 주말(일요일, 토요일)에 대한 스타일
-  //     // if (date.getDay() === 0) {
-  //     //   return 'react-calendar__tile--sunday'; // 일요일 스타일
-  //     // } else if (date.getDay() === 6) {
-  //     //   return 'react-calendar__tile--saturday'; // 토요일 스타일
-  //     // }
-
-  //     // 현재 주차인지 확인하여 스타일 적용
-  //     const currentWeekStart = new Date(currentDate);
-  //     currentWeekStart.setDate(currentDate.getDate() - currentDate.getDay() + 1); // 이번 주 시작 (월요일, -1은 일요일)
-  //     currentWeekStart.setHours(0, 0, 0, 0); // 시간을 00:00:00.000으로 초기화
-
-  //     const currentWeekEnd = new Date(currentWeekStart);
-  //     currentWeekEnd.setDate(currentWeekStart.getDate() + 6); // 이번 주 종료 (토요일)
-  //     currentWeekEnd.setHours(23, 59, 59, 999); // 시간을 23:59:59.999으로 설정
-
-  //     if (date >= currentWeekStart && date <= currentWeekEnd) {
-  //       // 첫 번째 날짜 (월요일)에만 왼쪽 border-radius 적용
-  //       if (date.getDate() === currentWeekStart.getDate()) {
-  //         return 'react-calendar__tile--currentWeek-left'; // 왼쪽 border-radius
-  //       }
-
-  //       // 마지막 날짜 (토요일)에만 오른쪽 border-radius 적용
-  //       if (date.getDate() === currentWeekEnd.getDate()) {
-  //         return 'react-calendar__tile--currentWeek-right'; // 오른쪽 border-radius
-  //       }
-
-  //       return 'react-calendar__tile--currentWeek';
-  //     }
-  //   }
-  //   return null;
-  // };
   const tileClassName = ({ date, view }: TileArgs): string | null => {
     if (view === 'month') {
       const formattedDate = formatDate(date);
       const attendanceFormattedDates = attendanceDates.map(formatDate);
 
-      // Initialize classes array
+      // Initialize classes array - 순서가 중요합니다! (나중에 선언된 클래스가 우선적용)
       const classes: string[] = [];
 
-      // Check if date has attendance
-      if (attendanceFormattedDates.includes(formattedDate)) {
-        classes.push('react-calendar__tile--attendance');
-      }
+      // 현재 월의 날짜인지 확인 (이전/다음 달의 날짜는 제외)
+      const currentMonth = currentDate.getMonth();
+      const isCurrentMonth = date.getMonth() === currentMonth;
 
-      // Current week check
+      // 1. 현재 주차 체크 (항상 배경 유지)
       const currentWeekStart = new Date(currentDate);
       currentWeekStart.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Week starts on Monday
       currentWeekStart.setHours(0, 0, 0, 0);
@@ -106,20 +61,26 @@ const AttendanceCalendar = ({ attendanceDates, currentDate, setDate }: Attendanc
         }
       }
 
+      // 2. 오늘 날짜 확인
+      if (formatDate(date) === formatDate(today)) {
+        classes.push('react-calendar__tile--today');
+      }
+
+      // 3. 출석 체크 안한 날짜 (현재 월에 해당하는 날짜만, 오늘 이전 날짜만)
+      if (isCurrentMonth && date < today && !attendanceFormattedDates.includes(formattedDate)) {
+        classes.push('react-calendar__tile--no-attendance');
+      }
+
+      // 4. 출석 체크한 날짜 (최우선 적용)
+      if (attendanceFormattedDates.includes(formattedDate)) {
+        classes.push('react-calendar__tile--attendance');
+      }
+
       // Return all applicable classes
       return classes.length > 0 ? classes.join(' ') : null;
     }
     return null;
   };
-
-
-  // 날짜 안에 숫자만 표시
-  // const tileContent = ({ date, view }: TileArgs): React.ReactNode => {
-  //   if (view === 'month') {
-  //     return <span className="text-sm">{date.getDate()}</span>;
-  //   }
-  //   return null;
-  // };
 
   const tileContent = ({ date, view }: TileArgs): React.ReactNode => {
     if (view === 'month') {
@@ -128,20 +89,10 @@ const AttendanceCalendar = ({ attendanceDates, currentDate, setDate }: Attendanc
     return null;
   };
 
-
-  // 날짜 선택 시 상태 업데이트
-  const onChange = (newDate: Value, event: React.MouseEvent<HTMLButtonElement>) => {
-    if (newDate instanceof Date) {
-      setDate(newDate);
-    }
-  };
-
   return (
     <Calendar
-      // onChange={onChange}
       value={currentDate}
       locale="ko-KR"
-      // calendarType="gregory" // 일요일로 달력 변환시 사용
       tileClassName={tileClassName}
       tileContent={tileContent}
       className="border-none custom-calendar"

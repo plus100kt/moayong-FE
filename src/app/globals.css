@@ -262,6 +262,100 @@
   z-index: 2;
 }
 
+/* 기본 스타일 유지하고 우선순위 명확히 설정 */
+
+/* 1. 현재 주차 배경 (모든 경우에 배경색 유지) */
+.react-calendar__tile--currentWeek,
+.react-calendar__tile--currentWeek-left,
+.react-calendar__tile--currentWeek-right {
+  background-color: #F4F5F6 !important;
+}
+
+/* 2. 오늘 날짜 스타일 (현재 주차 배경 위에 적용) */
+.react-calendar__tile--today {
+  position: relative;
+  z-index: 1;
+}
+
+.react-calendar__tile--today::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 33px;
+  height: 38px;
+  background-color: #C9FAE2;
+  border: 1px solid #12B76A;
+  border-radius: 65% 67% 55% 67%;
+  transform: translate(-50%, -50%) rotate(5deg);
+  z-index: -1;
+}
+
+.react-calendar__tile--today span {
+  color: #039855 !important;
+  font-weight: bold;
+  position: relative;
+  z-index: 2;
+}
+
+/* 3. 출석체크 안한 경우 - 회색 알모양 (다른 스타일 위에 적용) */
+.react-calendar__tile--no-attendance {
+  position: relative;
+}
+
+.react-calendar__tile--no-attendance::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 33px;
+  height: 38px;
+  background-color: #E6E8EA;
+  border-radius: 65% 67% 55% 67%;
+  transform: translate(-50%, -50%) rotate(5deg);
+  z-index: 1;
+}
+
+.react-calendar__tile--no-attendance span {
+  position: relative;
+  z-index: 2;
+  color: #33363D;
+}
+
+/* 4. 출석체크한 경우 - 녹색 알모양 (최우선 적용 - 오늘 날짜보다 우선) */
+.react-calendar__tile--attendance {
+  position: relative !important;
+}
+
+.react-calendar__tile--attendance::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 33px;
+  height: 38px;
+  background-color: #50CD89 !important;
+  /* 출석체크가 최우선 */
+  border-radius: 65% 67% 55% 67%;
+  transform: translate(-50%, -50%) rotate(5deg);
+  z-index: 3 !important;
+  /* 가장 높은 z-index로 설정 */
+}
+
+.react-calendar__tile--attendance span {
+  position: relative;
+  z-index: 4 !important;
+  /* 출석체크 날짜는 항상 최상위에 표시 */
+  color: white !important;
+  font-weight: bold;
+}
+
+/* 출석체크가 오늘날짜보다 우선하도록 추가 규칙 */
+.react-calendar__tile--attendance.react-calendar__tile--today::after {
+  display: none !important;
+  /* 출석체크한 경우 오늘 날짜 표시 제거 */
+}
+
 /* 날짜 - 대비 */
 .react-calendar__tile--attendance span {
   color: white;
