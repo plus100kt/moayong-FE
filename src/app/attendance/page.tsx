@@ -1,7 +1,7 @@
 'use client';
 
 import AttendanceCalendar from "src/_components/AttendanceCalendar";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Button from "src/_components/Button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,8 @@ import backbar from 'src/assets/appbar.svg'
 import megaphone from 'src/assets/images/icon-megaphone.png'
 import fire from 'src/assets/images/icon-fire.png'
 import calendar from 'src/assets/images/icon-calendar.png'
+import deco from 'src/assets/images/icon-deco.png'
+import { fetchAttendance, postAttendance } from "src/_api/attendance";
 
 const AttendancePage = () => {
   const router = useRouter();
@@ -18,23 +20,32 @@ const AttendancePage = () => {
     new Date(2025, 4, 8),
   ]);
   const [date, setDate] = useState<Date>(new Date());
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
+  // 출석 정보 가져오기 (초기 로드)
+  useEffect(() => {
+    fetchAttendance().then((data: any) => {
+      setAttendanceDates(data.dates);
+      setIsChecked(data.isChecked);
+    });
+  }, []);
+
+  // 출석 체크 버튼 핸들러
   const handleAttendanceCheck = useCallback(() => {
-    const today = new Date();
-    const formattedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    if (isChecked) return;
 
-    // 이미 출석한 날짜인지 확인
-    const alreadyAttended = attendanceDates.some(
-      (attendedDate) =>
-        attendedDate.getFullYear() === formattedToday.getFullYear() &&
-        attendedDate.getMonth() === formattedToday.getMonth() &&
-        attendedDate.getDate() === formattedToday.getDate()
-    );
+    postAttendance().then(() => {
+      setShowPopup(true);
+      setAttendanceDates((prev) => [...prev, new Date()]);
+    });
+  }, [isChecked]);
 
-    if (!alreadyAttended) {
-      setAttendanceDates((prevDates) => [...prevDates, formattedToday]);
-    }
-  }, [attendanceDates]);
+  // 팝업 닫을 때 출석 체크 확정
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setIsChecked(true); // 팝업 닫을 때 isChecked 적용
+  };
 
   return (
     <div className="flex flex-col items-center h-screen">
@@ -83,16 +94,33 @@ const AttendancePage = () => {
         />
       </div>
 
-      {/* Button */}
       <Button.Default
         size={"large"}
         onClick={handleAttendanceCheck}
         className="fixed bottom-[20px]"
+        disabled={isChecked} // 팝업 확인을 누르기 전까지 활성화됨
       >
-        출석 체크 도장 찍기 +5p
+        {isChecked ? "내일 다시 만나요!" : "출석 체크 도장 찍기 +5p"}
       </Button.Default>
+
+      {showPopup && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg text-center">
+            <Image src={deco} alt="출석 완료" className="mx-auto mb-4" />
+            <p className="text-gray-700 font-bold">출석 체크 완료!</p>
+            <p className="text-gray-900 text-lg">5p를 받았어요</p>
+            <button
+              onClick={handleClosePopup}
+              className="mt-4 text-green-600"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
 export default AttendancePage;
+
