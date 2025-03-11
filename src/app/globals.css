@@ -209,9 +209,23 @@
   position: relative;
 }
 
+/** 현재 주차 */
 .react-calendar__tile--currentWeek {
-  background-color: #E8F5E9 !important;
-  border-radius: 50% !important;
+  background-color: #F4F5F6 !important;
+}
+
+/** 현재 주차 */
+.react-calendar__tile--currentWeek-left {
+  background-color: #F4F5F6 !important;
+  border-top-left-radius: 50% !important;
+  border-bottom-left-radius: 50% !important;
+}
+
+/** 현재 주차 */
+.react-calendar__tile--currentWeek-right {
+  background-color: #F4F5F6 !important;
+  border-top-right-radius: 50% !important;
+  border-bottom-right-radius: 50% !important;
 }
 
 /* hover 시 색상 변경 */
@@ -272,4 +286,15 @@
 .custom-calendar .react-calendar__navigation__arrow:hover {
   color: #00A99D;
   /* 원하는 색상 */
+}
+
+/* 기본 달력 날짜 숨기기 */
+.react-calendar__tile abbr {
+  display: none;
+}
+
+/* 새로운 날짜 스타일 */
+.custom-date {
+  font-size: 14px;
+  font-weight: bold;
 }
