@@ -207,4 +207,5 @@ export default {
       });
     },
   ],
+  important: true,
 } satisfies Config;
