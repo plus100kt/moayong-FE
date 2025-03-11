@@ -37,7 +37,7 @@ const AttendancePage = () => {
   }, [attendanceDates]);
 
   return (
-    <div className="flex flex-col items-center h-screen bg-white">
+    <div className="flex flex-col items-center h-screen">
       <div className='h-[50px] w-full flex items-center pl-[9px]'>
         <button
           onClick={() => router.push('/')}
@@ -86,7 +86,10 @@ const AttendancePage = () => {
       </div>
 
       {/* Button */}
-      <Button.Default size={"large"} onClick={handleAttendanceCheck}
+      <Button.Default
+        size={"large"}
+        onClick={handleAttendanceCheck}
+        className="fixed bottom-[20px]"
       >
         출석 체크 도장 찍기 +5p
       </Button.Default>
