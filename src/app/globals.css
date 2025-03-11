@@ -184,29 +184,87 @@
 
 .react-calendar__tile--now:enabled:hover,
 .react-calendar__tile--now:enabled:focus {
-  background: #d3dce6;
+  /* background: #d3dce6; */
 }
 
 .react-calendar__tile--hasActive:enabled:hover,
 .react-calendar__tile--hasActive:enabled:focus {
-  background: #d3dce6;
+  /* background: #d3dce6; */
 }
 
 .react-calendar__tile--active {
-  background: #6b48ff;
-  color: white;
+  /* background: #6b48ff;
+  color: white; */
 }
 
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-  background: #6b48ff;
+  /* background: #6b48ff; */
 }
 
 .react-calendar__tile--attendance {
-  background-color: #50CD89 !important;
+  /* background-color: #50CD89 !important;
   border-radius: 50% !important;
   color: white;
+  position: relative; */
+}
+
+/* 현재 주차 */
+.react-calendar__tile--currentWeek {
+  background-color: #F4F5F6 !important;
+  /* 회색 배경 */
+}
+
+/* Keep your existing CSS, but modify these specific classes */
+
+/* Base attendance style - green circle */
+.react-calendar__tile--attendance {
   position: relative;
+  color: white;
+}
+
+.react-calendar__tile--attendance::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 32px;
+  /* 넓이를 키워서 타원형으로 */
+  height: 38px;
+  /* 높이는 줄여서 타원형을 만들기 */
+  background-color: #50CD89;
+  border-radius: 46%;
+  /* 타원형 형태로 만드는 border-radius */
+  transform: translate(-50%, -50%) rotate(10deg);
+  /* 알 모양처럼 약간 찌그러지게 회전 */
+  z-index: 1;
+}
+
+/* 현재주차 - 배경 */
+.react-calendar__tile--currentWeek,
+.react-calendar__tile--currentWeek-left,
+.react-calendar__tile--currentWeek-right {
+  background-color: #F4F5F6 !important;
+}
+
+/* 현재 주차의 엣지 포인트 - 왼쪽, 오른쪽 라운딩 스타일 */
+.react-calendar__tile--currentWeek.react-calendar__tile--attendance,
+.react-calendar__tile--currentWeek-left.react-calendar__tile--attendance,
+.react-calendar__tile--currentWeek-right.react-calendar__tile--attendance {
+  background-color: #F4F5F6 !important;
+  color: white;
+}
+
+/* 출석체크 알에의해 날짜 가림현상 해결 */
+.react-calendar__tile span {
+  position: relative;
+  z-index: 2;
+}
+
+/* 날짜 - 대비 */
+.react-calendar__tile--attendance span {
+  color: white;
+  font-weight: bold;
 }
 
 /** 현재 주차 */
