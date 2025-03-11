@@ -416,7 +416,7 @@
   font-weight: 600;
   width: 227px;
   padding: 0;
-  margin: 0 0 10px -20px;
+  margin: 0 0 10px -26px;
 }
 
 @media (min-width: 768px) {
@@ -436,7 +436,7 @@
 
 /* 좌우 이동 버튼 ( <, > ) 스타일 */
 .custom-calendar .react-calendar__navigation__arrow {
-  font-size: 28px;
+  font-size: 35px;
   /* 버튼 크기 */
   color: #B1B8BE;
   /* 기본 색상 */
@@ -444,6 +444,16 @@
   padding: 0;
   width: 6px !important;
   font-weight: 100;
+}
+
+.react-calendar__navigation__next-button {
+  position: relative;
+  left: -6px;
+}
+
+.react-calendar__navigation__prev-button {
+  position: relative;
+  left: 6px;
 }
 
 .react-calendar__navigation__arrow {
