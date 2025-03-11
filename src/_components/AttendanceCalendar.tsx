@@ -2,7 +2,7 @@
 
 import Calendar, { TileArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { Value } from 'react-calendar/dist/esm/shared/types.js';
 
 interface AttendanceCalendarProps {
@@ -12,6 +12,8 @@ interface AttendanceCalendarProps {
 }
 
 const AttendanceCalendar = ({ attendanceDates, currentDate, setDate }: AttendanceCalendarProps) => {
+  const [view, setView] = useState<'month' | 'year' | 'decade' | 'century'>('month');
+
   // 날짜 포맷팅 함수 (yyyy-mm-dd)
   const formatDate = (date: Date): string => {
     const year = date.getFullYear();
@@ -95,10 +97,12 @@ const AttendanceCalendar = ({ attendanceDates, currentDate, setDate }: Attendanc
       locale="ko-KR"
       tileClassName={tileClassName}
       tileContent={tileContent}
-      className="border-none custom-calendar"
+      className={`border-none custom-calendar ${view === 'year' || view === 'decade' ? 'show-dates' : ''}`}
       navigationLabel={({ date }) =>
         `${date.getFullYear()}년 ${date.getMonth() + 1}월`
       }
+      onViewChange={({ view }) => setView(view)}
+      // onClickDay={(value) => setDate(value as Date)}
       next2Label={null} // >> 버튼 제거
       prev2Label={null} // << 버튼 제거
     />
