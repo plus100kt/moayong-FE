@@ -104,14 +104,14 @@ const AttendancePage = () => {
       </Button.Default>
 
       {showPopup && (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg text-center">
-            <Image src={deco} alt="출석 완료" className="mx-auto mb-4" />
-            <p className="text-gray-700 font-bold">출석 체크 완료!</p>
-            <p className="text-gray-900 text-lg">5p를 받았어요</p>
+        <div className="z-10 fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-gray-0 w-[262px] h-[232px] rounded-[16px] flex flex-col items-center justify-end relative">
+            <Image src={deco} alt="출석 완료" className="mx-auto mb-4 absolute top-[-43%]" />
+            <p className="title-md text-gray-40">출석 체크 완료!</p>
+            <p className="title-lg text-gray-80 mt-[14px]">5p를 받았어요</p>
             <button
               onClick={handleClosePopup}
-              className="mt-4 text-green-600"
+              className="text-green-50 title-xs mb-[25px] mt-[33px]"
             >
               확인
             </button>
