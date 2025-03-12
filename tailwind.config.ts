@@ -57,6 +57,9 @@ export default {
         warning: "#F6C959",
         info: "#3D6CC8",
         success: "#6AD08C",
+
+        // 전체 변수 관리를 위한 테일윈드 설정
+        "text-10": "var(--test-10)",
       },
       fontFamily: {
         pretendard: ["Pretendard", "sans-serif"],
@@ -207,4 +210,5 @@ export default {
       });
     },
   ],
+  important: true,
 } satisfies Config;

@@ -6,8 +6,11 @@ import { Badge } from "src/components/common/Badge";
 import Image from "next/image";
 import DragonImage from "src/assets/images/dragon.png";
 import { CoinIcon, CalendarIcon, BulbIcon, LogoIcon } from "src/components/common/Icons";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className="flex flex-col bg-gray-5 min-h-screen">
       <div className="pt-5 pb-3 border-b bg-white px-5">
@@ -41,6 +44,7 @@ export default function Home() {
             subTitle="출석체크 확인하기"
             icon={<CalendarIcon />}
             className="flex-1"
+            onClick={() => router.push('/attendance')}
           />
           <CardButton
             title={`오늘의 금융지식이\n도착했어요!`}
