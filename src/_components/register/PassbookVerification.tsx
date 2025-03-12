@@ -52,7 +52,6 @@ const PassbookVerification = ({ onClick, keyName }: {
         // });
         // const data = await response.json();
 
-
         // 예시로 응답 데이터를 처리하는 부분
         // if (data.success) {
         //   setAccountNumber(data.accountNumber);
