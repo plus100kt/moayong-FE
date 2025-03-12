@@ -3,6 +3,7 @@
 import Calendar, { TileArgs } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Dispatch, SetStateAction, useState } from 'react';
+import './AttendanceCalendar.css';
 import { Value } from 'react-calendar/dist/esm/shared/types.js';
 
 interface AttendanceCalendarProps {
