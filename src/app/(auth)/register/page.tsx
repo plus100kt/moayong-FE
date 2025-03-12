@@ -67,15 +67,6 @@ const RegisterPage = () => {
     setOpen(true);
   };
 
-  // const handleUpdateAccount = () => {
-  //   // 바텀시트에서 수정된 정보로 업데이트
-  //   setInputValues((prevValues: any) => ({
-  //     ...prevValues,
-  //     savingType,
-  //     accountNumber: ocrAccountNumber,
-  //   }));
-  //   setOpen(false);
-  // };
   const handleUpdateAccount = () => {
     // 바텀시트에서 수정된 정보로 업데이트
     setInputValues((prevValues: any) => {
