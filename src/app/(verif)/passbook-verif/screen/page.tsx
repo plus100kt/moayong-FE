@@ -11,9 +11,19 @@ import {
   accountNumberAtom,
   ocrResultAtom,
 } from 'src/_store/passbookAtoms';
+import SuccessPopup from 'src/_components/SuccessPopup';
+
+
+const mockApiRequest: any = async () => {
+  // 목데이터 응답
+  return new Promise((resolve) =>
+    setTimeout(() => resolve({ success: true }), 1000)
+  );
+};
 
 const ScreenPage = () => {
   const [open, setOpen] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false); // 성공 팝업 상태
   const [editData, setEditData] = useState({
     transactionDate: '',
     transactionAmount: '',
@@ -51,6 +61,22 @@ const ScreenPage = () => {
     setOpen(false);
   };
 
+  const handleCompleteCertification = async () => {
+    try {
+      const response = await mockApiRequest(); // 목 API 요청
+      if (response.success) {
+        setShowSuccessPopup(true); // 성공 팝업 표시
+      }
+    } catch (error) {
+      console.error('API 요청 실패:', error);
+    }
+  };
+
+  const handleCloseSuccessPopup = () => {
+    setShowSuccessPopup(false);
+    // 여기에 인증 내역 확인 페이지로 이동하는 로직을 추가할 수 있습니다.
+  }
+
   return (
     <div>
       <div className="w-full">
@@ -85,6 +111,7 @@ const ScreenPage = () => {
           </div>
         )}
 
+        {/* 인증 내역 */}
         <div className="w-[320px] h-auto bg-gray-5 rounded-[16px] p-[20px] mx-auto">
           <div className="title-sm text-gray-90 mb-[16px]">인증 내역</div>
 
@@ -121,6 +148,7 @@ const ScreenPage = () => {
           )}
         </div>
 
+        {/* 하단 버튼 */}
         <div className="fixed bottom-[20px] left-0 right-0">
           <div className="flex flex-col justify-center items-center">
             <p className="title-xs text-gray-80">김모아님 인증 내역이 맞는지</p>
@@ -183,11 +211,18 @@ const ScreenPage = () => {
                 </div>
               </SheetContent>
             </Sheet>
-            <Button size="small" onClick={() => setOpen(false)}>
+
+            {/* 인증 완료 버튼 */}
+            <Button size="small" onClick={handleCompleteCertification}>
               인증완료
             </Button>
           </div>
         </div>
+
+        {/* 성공 팝업 */}
+        {showSuccessPopup && (
+          <SuccessPopup onClose={handleCloseSuccessPopup} />
+        )}
       </div>
     </div>
   );
