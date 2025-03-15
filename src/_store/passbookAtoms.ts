@@ -1,10 +1,11 @@
 import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 
 export const selectedImageAtom = atom<string | null>(null);
 export const accountNumberAtom = atom<string>('');
 export const balanceAtom = atom<number>(0);
 export const isLoadingAtom = atom<boolean>(false);
-
+export const isVerifiedAtom = atomWithStorage<boolean>('isVerified', false);
 export const ocrResultAtom = atom<{
   accountNumber: string;
   bankBalance: string;
@@ -44,9 +45,9 @@ export const formattedTransactionDateAtom = atom((get) => {
 
 // 업데이트를 위한 원자 (쓰기 가능)
 export const updatePassbookDataAtom = atom(
-  null, // 읽기 함수는 null (이 원자는 쓰기만 할 것이므로)
-  (get, set, data: { imageDataURL: string; ocrResult: any }) => {
-    const { imageDataURL, ocrResult } = data;
+  null,
+  (get, set, data: { imageDataURL: string; ocrResult: any; isVerified: boolean }) => {
+    const { imageDataURL, ocrResult, isVerified } = data;
     set(selectedImageAtom, imageDataURL);
     set(ocrResultAtom, {
       accountNumber: ocrResult.accountNumber,
@@ -58,5 +59,6 @@ export const updatePassbookDataAtom = atom(
     });
     set(accountNumberAtom, ocrResult.accountNumber);
     set(balanceAtom, parseInt(ocrResult.bankBalance));
+    set(isVerifiedAtom, isVerified); // 인증 완료 상태 업데이트
   }
 );
