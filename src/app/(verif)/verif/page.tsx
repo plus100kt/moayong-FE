@@ -9,8 +9,6 @@ import megaphone from 'src/assets/images/megaphone.png';
 import laptop from 'src/assets/images/laptop.png';
 import verif from 'src/assets/images/verif.png';
 import non_verif from 'src/assets/images/non-verif.png';
-import x from 'src/assets/icon-x.svg'
-import { useState } from "react";
 import { useAtom } from "jotai";
 import { isVerifiedAtom } from "src/_store/passbookAtoms";
 

@@ -12,7 +12,8 @@ import {
   ocrResultAtom,
 } from 'src/_store/passbookAtoms';
 import SuccessPopup from 'src/_components/SuccessPopup';
-
+import x from 'src/assets/icon-x.svg'
+import { useRouter } from 'next/navigation';
 
 const mockApiRequest: any = async () => {
   // 목데이터 응답
@@ -29,6 +30,7 @@ const ScreenPage = () => {
     transactionAmount: '',
     senderName: '',
   });
+  const router = useRouter();
 
   const [selectedImage] = useAtom(selectedImageAtom);
   const [accountNumber, setAccountNumber] = useAtom(accountNumberAtom);
@@ -80,8 +82,12 @@ const ScreenPage = () => {
   return (
     <div>
       <div className="w-full">
-        <h2 className="text-xl font-bold mb-6 text-center">입력 내용 확인</h2>
-
+        <div className='h-[50px] py-[5px] w-full flex items-center pl-[9px] bg-gray-0 mb-4'>
+          <button onClick={() => router.push('/verif')} className='z-10'>
+            <Image src={x} alt="" />
+          </button>
+          <p className='title-sm text-gray-80 text-center w-full ml-[-36px]'>저축 인증하기</p>
+        </div>
         {selectedImage && (
           <div className="flex justify-center relative">
             <Image

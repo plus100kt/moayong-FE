@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import upload from 'src/assets/images/upload.png';
 import sample from 'src/assets/images/sample-img.png';
@@ -13,6 +12,7 @@ import {
   isLoadingAtom,
   updatePassbookDataAtom,
 } from 'src/_store/passbookAtoms';
+import x from 'src/assets/icon-x.svg'
 
 const PassbookVerifiPage = () => {
   const router = useRouter();
@@ -85,6 +85,12 @@ const PassbookVerifiPage = () => {
 
   return (
     <div className="w-full mx-auto flex flex-col items-center h-screen min-h-screen">
+      <div className='h-[50px] py-[5px] w-full flex items-center pl-[9px] bg-gray-0 mb-4'>
+        <button onClick={() => router.push('/verif')} className='z-10'>
+          <Image src={x} alt="" />
+        </button>
+        <p className='title-sm text-gray-80 text-center w-full ml-[-36px]'>저축 인증하기</p>
+      </div>
       <div className="bg-gray-5 border border-gray-20 rounded-[16px] w-[320px] h-[280px] flex flex-col items-center justify-center mx-[20px]">
         {selectedImage ? (
           <Image
