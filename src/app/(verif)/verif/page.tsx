@@ -37,18 +37,19 @@ const VerifPage = () => {
 
         <p className="title-md mb-6 pl-[4px]">김모아님의 저축현황</p>
 
-        <div className="h-[100px] shadow-[0px_0px_0px_0px_rgba(0,0,0,0),0px_4px_4px_0px_rgba(0,0,0,0)] bg-white rounded-[16px] flex items-center justify-center gap-[27px] mb-4">
-          <div className="flex flex-col justify-center items-center gap-[11px]">
-            <p className="label-md text-gray-80">누적 저축금액</p>
-            <p className="title-xs text-purple-30">2,500,00원</p>
+        {!isVerified &&
+          <div className="h-[100px] shadow-[0px_0px_0px_0px_rgba(0,0,0,0),0px_4px_4px_0px_rgba(0,0,0,0)] bg-white rounded-[16px] flex items-center justify-center gap-[27px] mb-4">
+            <div className="flex flex-col justify-center items-center gap-[11px]">
+              <p className="label-md text-gray-80">누적 저축금액</p>
+              <p className="title-xs text-purple-30">2,500,00원</p>
+            </div>
+            <Image src={equal} alt="=" />
+            <div className="flex flex-col justify-center items-center h-full gap-[2px]">
+              <p className="label-md text-gray-80 h-[41%] flex flex-col justify-end">아이맥 최신형</p>
+              <Image src={laptop} alt="상품 이미지" className="h-[59%] object-contain object-top" />
+            </div>
           </div>
-          <Image src={equal} alt="=" />
-          <div className="flex flex-col justify-center items-center h-full gap-[2px]">
-            <p className="label-md text-gray-80 h-[41%] flex flex-col justify-end">아이맥 최신형</p>
-            <Image src={laptop} alt="상품 이미지" className="h-[59%] object-contain object-top" />
-          </div>
-        </div>
-
+        }
         {/* 그래프 섹션 */}
         <div className="h-[284px] shadow-[0px_0px_0px_0px_rgba(0,0,0,0),0px_4px_4px_0px_rgba(0,0,0,0)] bg-white rounded-[16px] flex flex-col items-center mb-6 p-6">
           <div className="flex items-center justify-between w-full mb-[40px]">
