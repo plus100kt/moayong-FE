@@ -51,7 +51,7 @@ const ScreenPage = () => {
   };
 
   const handleUpdateAccount = () => {
-    setOcrResult((prev) => {
+    (setOcrResult as any)((prev) => {
       if (!prev) return prev;
       return {
         ...prev,
