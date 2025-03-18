@@ -95,7 +95,8 @@ export const getUser = (id: number) => api.get<UserResponse>(`/users/${id}`);
 export const updateUser = (id: number, data: Partial<UserPutRequest>) =>
   api.put(`/users/${id}`, data);
 
-export const getMe = () => api.get<UserResponse>("/users/me").then((res) => res.data);
+export const getMe = () =>
+  api.get<{ data: UserResponse }>("/users/me").then((res) => res.data.data);
 
 export const updateAccount = (userId: number, data: UserAccountPutRequest) =>
   api.put(`/users/${userId}/account`, data);
@@ -181,4 +182,6 @@ export const getSavingsByMemberId = (memberId: number) =>
   api.get<SavingsTransaction[]>(`/members/${memberId}/savings`).then((res) => res.data);
 
 export const getTotalAmountByUserId = (userId: number) =>
-  api.get<number>(`/users/${userId}/savings/total`).then((res) => res.data);
+  api
+    .get<{ data: { amount: number } }>(`/users/${userId}/savings/total`)
+    .then((res) => res.data.data.amount);
