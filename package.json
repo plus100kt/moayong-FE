@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "dev:https":"node server/index.js --https",
+    "dev:https": "node server/index.js --https",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -23,6 +23,7 @@
     "axios": "^1.8.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "jotai": "^2.12.1",
     "lucide-react": "^0.475.0",
     "motion": "^12.4.10",

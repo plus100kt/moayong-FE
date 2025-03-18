@@ -1,6 +1,6 @@
 import axios from "axios";
 import type {
-  League,
+  LeagueResponse,
   LeagueMember,
   OnboardingRequest,
   Quiz,
@@ -10,6 +10,7 @@ import type {
   UserAccountPutRequest,
   VerificationResult,
   VerificationStatus,
+  MatchResponse,
 } from "src/_types/type";
 
 const BASE_URL = "https://api.moayong.com/api/v1";
@@ -107,11 +108,13 @@ export const checkNickname = (nickname: string) =>
 // League APIs
 export const createNewSeason = () => api.post("/leagues/new-season");
 
-export const getLeagues = () => api.get<League[]>("/leagues").then((res) => res.data);
+export const getLeagues = () => api.get<LeagueResponse[]>("/leagues").then((res) => res.data);
 
-export const getLeague = (id: number) => api.get<League>(`/leagues/${id}`).then((res) => res.data);
+export const getLeague = (id: number) =>
+  api.get<{ data: LeagueResponse }>(`/leagues/${id}`).then((res) => res.data.data);
 
-export const getOpenLeagues = () => api.get<League[]>("/leagues/open").then((res) => res.data);
+export const getOpenLeagues = () =>
+  api.get<LeagueResponse[]>("/leagues/open").then((res) => res.data);
 
 // Verification APIs
 export const startAccountVerification = (data: FormData) =>
@@ -185,3 +188,11 @@ export const getTotalAmountByUserId = (userId: number) =>
   api
     .get<{ data: { amount: number } }>(`/users/${userId}/savings/total`)
     .then((res) => res.data.data.amount);
+
+// members/{id}/match
+export const getMatch = (memberId: number) =>
+  api.get<{ data: MatchResponse }>(`/members/${memberId}/match`).then((res) => res.data.data);
+
+// users/{id}/match
+export const getMatchByUserId = (userId: number) =>
+  api.get<{ data: MatchResponse }>(`/users/${userId}/match`).then((res) => res.data.data);

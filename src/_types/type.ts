@@ -54,12 +54,14 @@ export interface UserAccountPutRequest {
 }
 
 // League Types
-export interface League {
+export interface LeagueResponse {
   id: number;
+  seasonId: number;
+  level: number;
   name: string;
-  startDate: string;
-  endDate: string;
-  status: "OPEN" | "IN_PROGRESS" | "CLOSED";
+  imageUrl: string;
+  promotionRate: number;
+  relegationRate: number;
 }
 
 // Verification Types
@@ -103,4 +105,22 @@ export interface LeagueMember {
   username: string;
   totalScore: number;
   rank: number;
+}
+
+// Match Types
+export interface MatchResponse {
+  memberId: number;
+  leagueId: number;
+  totalScore: number;
+  goalAmount: number;
+  rank: number;
+  rate: number;
+  nextLevel: number;
+  promotionStatus: PromotionStatus;
+}
+
+export enum PromotionStatus {
+  PROMOTION,
+  RELEGATION,
+  SUSPENDED,
 }
