@@ -11,6 +11,7 @@ import type {
   VerificationResult,
   VerificationStatus,
   MatchResponse,
+  AttendanceResponse,
 } from "src/_types/type";
 
 const BASE_URL = "https://api.moayong.com/api/v1";
@@ -196,3 +197,28 @@ export const getMatch = (memberId: number) =>
 // users/{id}/match
 export const getMatchByUserId = (userId: number) =>
   api.get<{ data: MatchResponse }>(`/users/${userId}/match`).then((res) => res.data.data);
+
+// POST members/{id}/attendances/today
+export const postAttendance = (memberId: number) =>
+  api.post(`/members/${memberId}/attendances/today`);
+
+// GET members/{id}/attendances/today
+export const getAttendance = (memberId: number) =>
+  api
+    .get<{ data: AttendanceResponse }>(`/members/${memberId}/attendances/today`)
+    .then((res) => res.data.data);
+
+// 최대, 현재 연속 출석일
+export const getConsecutiveAttendance = (userId: number) =>
+  api
+    .get<{ data: { currentConsecutiveDate: number; maxConsecutiveDate: number } }>(
+      `/users/${userId}/attendances/consecutive`
+    )
+    .then((res) => res.data.data);
+
+// 오늘 출석 체크 여부
+// GET members/{id}/attendances/today
+export const getAttendanceToday = (memberId: number) =>
+  api
+    .get<{ data: AttendanceResponse }>(`/members/${memberId}/attendances/today`)
+    .then((res) => res.data.data);

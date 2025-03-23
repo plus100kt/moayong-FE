@@ -124,3 +124,7 @@ export enum PromotionStatus {
   RELEGATION,
   SUSPENDED,
 }
+
+export interface AttendanceResponse {
+  attended: boolean;
+}
