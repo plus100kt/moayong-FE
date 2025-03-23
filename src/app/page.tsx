@@ -9,18 +9,21 @@ import { CoinIcon, CalendarIcon, BulbIcon, LogoIcon } from "src/components/commo
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import {
+  getAttendanceToday,
   getLeague,
-  getLeagues,
   getMatch,
   getMe,
-  getOpenLeagues,
   getTotalAmountByUserId,
 } from "src/_api/api";
 import dayjs from "dayjs";
-import { LeagueResponse, MatchResponse } from "src/_types/type";
-import { useEffect, useState } from "react";
+import { AttendanceResponse, LeagueResponse, MatchResponse } from "src/_types/type";
+import { useEffect, useMemo, useState } from "react";
+import { SemiCircleProgress } from "src/_components/SemiCircleProgress";
+
 export default function Home() {
   const router = useRouter();
+  const [thisMonthSavingRate, setThisMonthSavingRate] = useState(0);
+  const [thisWeekSavingGoal, setThisWeekSavingGoal] = useState("");
 
   const { data: user } = useQuery({
     queryKey: ["user"],
@@ -40,7 +43,6 @@ export default function Home() {
     queryFn: () => getMatch(user?.id),
     enabled: !!user?.id,
   });
-  console.log("match", match);
 
   // getLeague
   const { data: league, refetch: refetchLeague } = useQuery<LeagueResponse>({
@@ -48,16 +50,42 @@ export default function Home() {
     queryFn: () => getLeague(match?.leagueId),
     enabled: !!match?.leagueId,
   });
-  console.log("match?.leagueId", match?.leagueId);
+
+  const { data: attendanceToday } = useQuery<AttendanceResponse>({
+    queryKey: ["attendanceToday"],
+    queryFn: () => getAttendanceToday(user?.id),
+    enabled: !!user?.id,
+  });
+
   useEffect(() => {
     if (isMatchSuccess) {
-      console.log("match", match);
-
       refetchLeague();
     }
   }, [match, isMatchSuccess]);
 
-  console.log("league", league);
+  useEffect(() => {
+    calculateThisWeekSavingGoal();
+  }, [user, totalSavings]);
+
+  /**
+   * 이번주 저축 목표 계산, 달성률 계산
+   */
+  const calculateThisWeekSavingGoal = () => {
+    if (!user) {
+      return 0;
+    }
+    const monthSaving = user?.monthlySalary * (user?.savingsRate * 0.01);
+    if (totalSavings > 0) {
+      setThisMonthSavingRate(Math.floor((monthSaving / totalSavings) * 100));
+    }
+
+    const goal = monthSaving / 4.3;
+    const thisWeekSaving =
+      goal < 10000 ? `${Math.floor(goal / 1000)}천원` : `${Math.floor(goal / 10000)}만원`;
+
+    setThisWeekSavingGoal(thisWeekSaving);
+  };
+
   return (
     <div className="flex flex-col bg-gray-5 min-h-screen">
       <div className="pt-5 pb-3 border-b bg-white px-5">
@@ -71,12 +99,14 @@ export default function Home() {
           </p>
           <p className="heading-sm text-gray-80"> {user?.nickname}님, 오늘도 함께 모아용!</p>
         </div>
-        <div className="flex gap-4 justify-between items-center pb-4">
+        <div className="flex gap-4 justify-between items-center mb-[-8px]">
           <div className="flex-1 text-center">
-            <p className="label-sm text-gray-70">이번주목표 5만원</p>
-            <div>그래프</div>
+            <p className="label-sm text-gray-70">이번주 목표 {thisWeekSavingGoal}</p>
+            <div className="flex justify-center items-center pt-2">
+              <SemiCircleProgress percentage={thisMonthSavingRate} />
+            </div>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 ml-5">
             <div className="p-1 ">
               <CoinIcon />
             </div>
@@ -93,8 +123,11 @@ export default function Home() {
       <section className="p-5  flex flex-col gap-4">
         <div className="flex gap-3">
           <CardButton
-            title={`출석체크를\n완료했어요!`}
-            subTitle="출석체크 확인하기"
+            isSelected={attendanceToday?.attended}
+            title={
+              attendanceToday?.attended ? `출석체크를\n완료했어요!` : `출석체크하고\n포인트 얻자!!`
+            }
+            subTitle={attendanceToday?.attended ? "출석체크 확인하기" : "출석체크 하러가기"}
             icon={<CalendarIcon />}
             className="flex-1"
             onClick={() => router.push("/attendance")}

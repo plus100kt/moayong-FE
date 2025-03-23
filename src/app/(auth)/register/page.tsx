@@ -132,7 +132,7 @@ const RegisterPage = () => {
       name: inputValues.name,
       nickname: inputValues.nickname,
       savingsBank: bank?.code,
-      monthlySalary: inputValues.monthlySalary,
+      monthlySalary: inputValues.monthlySalary * 10000,
       savingsRate: 10,
       accountNumber: "123-1231-234",
     };
