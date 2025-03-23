@@ -19,6 +19,7 @@ import dayjs from "dayjs";
 import { AttendanceResponse, LeagueResponse, MatchResponse } from "src/_types/type";
 import { useEffect, useMemo, useState } from "react";
 import { SemiCircleProgress } from "src/_components/SemiCircleProgress";
+import { BottomNav } from "src/_components/BottomNav";
 
 export default function Home() {
   const router = useRouter();
@@ -115,7 +116,6 @@ export default function Home() {
           </div>
         </div>
         <Button.Icon className="w-full" onClick={() => router.push("/verif")}>
-          {" "}
           바로 저축 인증하기
         </Button.Icon>
       </section>
@@ -158,6 +158,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <BottomNav />
     </div>
   );
 }

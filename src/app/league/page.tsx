@@ -1,5 +1,6 @@
 "use client";
 
+import { BottomNav } from "src/_components/BottomNav";
 import { LeagueCharacterList } from "./_components/LeagueCharacterList";
 import { RankListItem } from "./_components/RankListItem";
 import { mockData } from "./_mock/mock";
@@ -33,6 +34,7 @@ const LeaguePage = () => {
           />
         ))}
       </section>
+      <BottomNav />
     </div>
   );
 };
