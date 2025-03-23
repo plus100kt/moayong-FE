@@ -2,25 +2,36 @@
 
 import { Callout } from "src/_components/Callout";
 import { QuizListItem } from "./_components/QuizListItem";
-import { Arrow } from "src/components/common/Icons/Arrow";
 import { useRouter } from "next/navigation";
+import { TopBarWithBackButton } from "src/_components/TopBarWithBackButton";
+import Button from "src/_components/Button";
+import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+import { getMe, getDailyQuizByMemberId, getAllSolvedQuizzesByUserId } from "src/_api/api";
 
 export default function Quiz() {
   const router = useRouter();
+  const { data: user } = useQuery({
+    queryKey: ["user"],
+    queryFn: () => getMe(),
+  });
+
+  const { data: quiz } = useQuery({
+    queryKey: ["quiz"],
+    queryFn: () => getDailyQuizByMemberId(user?.id),
+    enabled: !!user?.id,
+  });
+
+  const { data: solvedQuizs } = useQuery({
+    queryKey: ["solvedQuiz"],
+    queryFn: () => getAllSolvedQuizzesByUserId(user?.id),
+    enabled: !!user?.id,
+  });
+  console.log("solvedQuiz", solvedQuizs);
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="h-[50px] border-b border-[#CDD1D5] relative flex justify-center items-center">
-        <div
-          className="absolute left-5 top-1/2 -translate-y-1/2 cursor-pointer"
-          onClick={() => {
-            router.back();
-          }}
-        >
-          <Arrow variant="left" />
-        </div>
-        <div className="title-sm">금융 지식</div>
-      </div>
+      <TopBarWithBackButton title="금융 지식" />
       <div className="bg-white py-6 px-5 ">
         <section className="pb-8">
           <div className="flex flex-col gap-2">
@@ -39,21 +50,27 @@ export default function Quiz() {
         <section>
           <h3 className="title-sm text-gray-90 pb-4">하루 3분 금융지식 알아가기</h3>
           <ul className="flex flex-col gap-2">
-            <QuizListItem text="분산 투자란 무엇인가요?" onClick={() => {}} />
-            <QuizListItem text="분산 투자란 무엇인가요?" onClick={() => {}} />
-            <QuizListItem text="분산 투자란 무엇인가요?" onClick={() => {}} />
-            <QuizListItem text="분산 투자란 무엇인가요?" onClick={() => {}} />
-            <QuizListItem text="분산 투자란 무엇인가요?" onClick={() => {}} />
-            <QuizListItem text="분산 투자란 무엇인가요?" onClick={() => {}} />
-            <QuizListItem text="분산 투자란 무엇인가요?" onClick={() => {}} />
-            <QuizListItem text="분산 투자란 무엇인가요?" onClick={() => {}} />
+            {solvedQuizs?.map((quiz) => (
+              <QuizListItem
+                text={quiz.financeTitle}
+                onClick={() => {
+                  router.push(`/quiz/past/${quiz.id}`);
+                }}
+              />
+            ))}
           </ul>
         </section>
-        <div className="px-5 py-5 fixed bottom-0 left-0 right-0 bg-white">
-          <div className="flex justify-center py-4 w-full rounded-2xl bg-gray-10">
-            <button className="btn-primary label-lg">다음 퀴즈는 내일 9시에 공개돼요 🔒</button>
-          </div>
-        </div>
+      </div>
+      <div className="px-5 py-5 flex justify-center flex-col gap-2">
+        {quiz ? (
+          <Button.Default className="bg-gray-10 text-gray-60" disabled>
+            다음 퀴즈는 내일 9시에 공개돼요 🔒
+          </Button.Default>
+        ) : (
+          <Button.Default onClick={() => router.push(`/problem/${quiz?.id}`)}>
+            퀴즈 도전하기
+          </Button.Default>
+        )}
       </div>
     </div>
   );

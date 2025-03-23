@@ -13,13 +13,15 @@ import {
   getLeague,
   getMatch,
   getMe,
+  getSeasonOpen,
   getTotalAmountByUserId,
 } from "src/_api/api";
 import dayjs from "dayjs";
-import { AttendanceResponse, LeagueResponse, MatchResponse } from "src/_types/type";
+import { AttendanceResponse, LeagueResponse, MatchResponse, SeasonResponse } from "src/_types/type";
 import { useEffect, useMemo, useState } from "react";
 import { SemiCircleProgress } from "src/_components/SemiCircleProgress";
 import { BottomNav } from "src/_components/BottomNav";
+import { getDaysDiff } from "src/_lib/utils";
 
 export default function Home() {
   const router = useRouter();
@@ -45,12 +47,23 @@ export default function Home() {
     enabled: !!user?.id,
   });
 
+  // /seasons
+  const { data: seasonOpen, isSuccess: isSeasonOpenSuccess } = useQuery<SeasonResponse>({
+    queryKey: ["seasonOpen"],
+    queryFn: () => getSeasonOpen(),
+    enabled: !!user?.id,
+  });
+
+  console.log("seasonOpen", seasonOpen);
+
   // getLeague
   const { data: league, refetch: refetchLeague } = useQuery<LeagueResponse>({
     queryKey: ["league"],
     queryFn: () => getLeague(match?.leagueId),
     enabled: !!match?.leagueId,
   });
+  console.log("match", match);
+  console.log("league", league);
 
   const { data: attendanceToday } = useQuery<AttendanceResponse>({
     queryKey: ["attendanceToday"],
@@ -137,26 +150,41 @@ export default function Home() {
             subTitle="퀴즈 풀러가기"
             icon={<BulbIcon />}
             className="flex-1"
+            onClick={() => router.push("/quiz")}
           />
         </div>
 
-        <div className="shadow-card-shadow bg-white px-5 h-[140px] rounded-2xl  flex justify-between items-center">
-          <div className="flex flex-col justify-center">
-            <div className="flex flex-col gap-1 pb-3">
-              <p className="label-sm gray-50">
-                리그 종료까지 <span className="text-green-60">3일</span>남았어요!
-              </p>
-              <p className="title-sm text-gray-90">{league?.name} 진행 중</p>
+        {match && (
+          <div className="shadow-card-shadow bg-white px-5 h-[140px] rounded-2xl  flex justify-between items-center">
+            <div className="flex flex-col justify-center">
+              <div className="flex flex-col gap-1 pb-3">
+                <p className="label-sm gray-50">
+                  리그 종료까지{" "}
+                  <span className="text-green-60">
+                    {getDaysDiff(dayjs().format("YYYY-MM-DD"), seasonOpen?.endedAt)}일&nbsp;
+                  </span>
+                  남았어요!
+                </p>
+                <p className="title-sm text-gray-90">{league?.name} 진행 중</p>
+              </div>
+              <div className="flex gap-1">
+                <Badge variant="primary">승급가능</Badge>
+                <Badge variant="gray">상위 {match?.rank}%</Badge>
+              </div>
             </div>
-            <div className="flex gap-1">
-              <Badge variant="primary">승급가능</Badge>
-              <Badge variant="gray">상위 5%</Badge>
+            <div>
+              {league?.imageUrl && (
+                <Image
+                  src={league?.imageUrl}
+                  alt="용"
+                  width={94}
+                  height={104}
+                  className="rounded-2xl"
+                />
+              )}
             </div>
           </div>
-          <div>
-            <Image src={DragonImage} alt="용" width={94} height={104} />
-          </div>
-        </div>
+        )}
       </section>
       <BottomNav />
     </div>

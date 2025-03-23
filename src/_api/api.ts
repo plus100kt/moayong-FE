@@ -12,6 +12,10 @@ import type {
   VerificationStatus,
   MatchResponse,
   AttendanceResponse,
+  Problem,
+  QuizSubmissionResponse,
+  QuizKnowledgeResponse,
+  SeasonResponse,
 } from "src/_types/type";
 
 const BASE_URL = "https://api.moayong.com/api/v1";
@@ -109,6 +113,9 @@ export const checkNickname = (nickname: string) =>
 // League APIs
 export const createNewSeason = () => api.post("/leagues/new-season");
 
+export const getSeasonOpen = () =>
+  api.get<{ data: SeasonResponse }>("/seasons/open").then((res) => res.data.data);
+
 export const getLeagues = () => api.get<LeagueResponse[]>("/leagues").then((res) => res.data);
 
 export const getLeague = (id: number) =>
@@ -164,19 +171,27 @@ export const getMemberRankingByLeagueId = (leagueId: number) =>
 
 // Quiz APIs
 export const getDailyQuizByMemberId = (memberId: number) =>
-  api.get<Quiz>(`/members/${memberId}/quizzes/random`).then((res) => res.data);
+  api.get<{ data: Quiz }>(`/members/${memberId}/quizzes/random`).then((res) => res.data.data);
 
 export const showQuiz = (memberId: number, quizId: number) =>
-  api.get<Quiz>(`/members/${memberId}/quizzes/${quizId}/problem`).then((res) => res.data);
+  api
+    .get<{ data: Problem }>(`/members/${memberId}/quizzes/${quizId}/problem`)
+    .then((res) => res.data.data);
 
 export const submitQuiz = (memberId: number, quizId: number, answer: number) =>
-  api.post(`/members/${memberId}/quizzes/${quizId}/solve`, { answer }).then((res) => res.data);
+  api
+    .post<{ data: QuizSubmissionResponse }>(`/members/${memberId}/quizzes/${quizId}/solve`, {
+      answer,
+    })
+    .then((res) => res.data.data);
 
 export const getAllSolvedQuizzesByUserId = (userId: number) =>
-  api.get<Quiz[]>(`/users/${userId}/quizzes`).then((res) => res.data);
+  api
+    .get<{ data: QuizKnowledgeResponse[] }>(`/users/${userId}/quizzes`)
+    .then((res) => res.data.data);
 
 export const getSolvedQuiz = (userId: number, quizId: number) =>
-  api.get<Quiz>(`/users/${userId}/quizzes/${quizId}`).then((res) => res.data);
+  api.get<{ data: Quiz }>(`/users/${userId}/quizzes/${quizId}`).then((res) => res.data.data);
 
 // Savings APIs
 export const createSavingsTransaction = (memberId: number, data: Omit<SavingsTransaction, "id">) =>

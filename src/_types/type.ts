@@ -82,9 +82,15 @@ export interface VerificationResult {
 // Quiz Types
 export interface Quiz {
   id: number;
-  question: string;
-  options: string[];
-  correctAnswer: number;
+  financeTitle: string;
+  financeDescription: string;
+  sourceTitle: string;
+  sourceLink: string;
+}
+export interface Problem {
+  id: number;
+  problemTitle: string;
+  problemOptions: string[];
 }
 
 // Savings Types
@@ -127,4 +133,31 @@ export enum PromotionStatus {
 
 export interface AttendanceResponse {
   attended: boolean;
+}
+
+export interface QuizSubmissionResponse {
+  userAnswer: number;
+  status: "CORRECT" | "WRONG";
+  answerNumber: number;
+  answerDescription: string;
+}
+
+export interface QuizKnowledgeResponse {
+  id: number;
+  financeTitle: string;
+  financeDescription: string;
+  sourceTitle?: string;
+  sourceLink?: string;
+}
+
+export interface SeasonResponse {
+  id: number;
+  status: "OPEN" | "CLOSED";
+  startedAt: string;
+  endedAt: string;
+}
+
+export enum SeasonStatus {
+  OPEN,
+  CLOSED,
 }
