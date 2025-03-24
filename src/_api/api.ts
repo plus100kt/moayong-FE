@@ -71,16 +71,6 @@ api.interceptors.response.use(
       }
     }
 
-    if (error.response?.status === 401) {
-      try {
-        await refresh();
-        return api(error.config);
-      } catch (refreshError) {
-        console.error("Refresh token error:", refreshError);
-        // window.location.href = "/login";
-      }
-    }
-
     return Promise.reject(error);
   }
 );

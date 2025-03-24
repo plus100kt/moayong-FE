@@ -86,6 +86,7 @@ export interface Quiz {
   financeDescription: string;
   sourceTitle: string;
   sourceLink: string;
+  createdAt: string;
 }
 export interface Problem {
   id: number;

@@ -12,22 +12,22 @@ import { useAuth } from "src/_hooks/auth";
 export default function Quiz() {
   const router = useRouter();
   const { user } = useAuth();
+
   const { data: quiz } = useQuery({
     queryKey: ["quiz"],
     queryFn: () => getDailyQuizByMemberId(user?.id),
     enabled: !!user?.id,
   });
 
-  const { data: solvedQuizs } = useQuery({
+  const { data: solvedQuizzes } = useQuery({
     queryKey: ["solvedQuiz"],
     queryFn: () => getAllSolvedQuizzesByUserId(user?.id),
     enabled: !!user?.id,
   });
-  console.log("solvedQuiz", solvedQuizs);
 
   return (
     <div className="flex flex-col min-h-screen">
-      <TopBarWithBackButton title="금융 지식" />
+      <TopBarWithBackButton title="금융 지식" onClick={() => router.push("/")} />
       <div className="bg-white py-6 px-5 ">
         <section className="pb-8">
           <div className="flex flex-col gap-2">
@@ -46,7 +46,7 @@ export default function Quiz() {
         <section>
           <h3 className="title-sm text-gray-90 pb-4">하루 3분 금융지식 알아가기</h3>
           <ul className="flex flex-col gap-2">
-            {solvedQuizs?.map((quiz) => (
+            {solvedQuizzes?.map((quiz) => (
               <QuizListItem
                 text={quiz.financeTitle}
                 onClick={() => {
@@ -57,14 +57,14 @@ export default function Quiz() {
           </ul>
         </section>
       </div>
-      <div className="px-5 py-5 flex justify-center flex-col gap-2">
+      <div className="px-5 py-5 fixed bottom-0 left-0 right-0">
         {quiz ? (
-          <Button.Default className="bg-gray-10 text-gray-60" disabled>
-            다음 퀴즈는 내일 9시에 공개돼요 🔒
+          <Button.Default onClick={() => router.push(`/quiz/today/${quiz?.id}`)} className="w-full">
+            퀴즈 도전하기
           </Button.Default>
         ) : (
-          <Button.Default onClick={() => router.push(`/problem/${quiz?.id}`)}>
-            퀴즈 도전하기
+          <Button.Default className="bg-gray-10 text-gray-60 w-full" disabled>
+            다음 퀴즈는 내일 9시에 공개돼요 🔒
           </Button.Default>
         )}
       </div>

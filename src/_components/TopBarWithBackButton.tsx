@@ -1,7 +1,13 @@
 import { Arrow } from "src/components/common/Icons/Arrow";
 import { useRouter } from "next/navigation";
 
-export const TopBarWithBackButton = ({ title }: { title: string }) => {
+export const TopBarWithBackButton = ({
+  title,
+  onClick,
+}: {
+  title: string;
+  onClick?: () => void;
+}) => {
   const router = useRouter();
 
   return (
@@ -9,6 +15,7 @@ export const TopBarWithBackButton = ({ title }: { title: string }) => {
       <div
         className="absolute left-5 top-1/2 -translate-y-1/2 cursor-pointer"
         onClick={() => {
+          onClick?.();
           router.back();
         }}
       >

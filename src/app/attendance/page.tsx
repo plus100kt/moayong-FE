@@ -28,13 +28,13 @@ const AttendancePage = () => {
   const [showPopup, setShowPopup] = useState<boolean>(false);
 
   // 출석 정보 가져오기 (초기 로드)
-  const { data: consecutiveAttendance } = useQuery({
+  const { data: consecutiveAttendance, refetch: refetchConsecutiveAttendance } = useQuery({
     queryKey: ["consecutiveAttendance"],
     queryFn: () => getConsecutiveAttendance(user?.id),
     enabled: !!user,
   });
 
-  const { data: attendanceToday } = useQuery({
+  const { data: attendanceToday, refetch: refetchAttendanceToday } = useQuery({
     queryKey: ["attendanceToday"],
     queryFn: () => getAttendanceToday(user?.id),
     enabled: !!user,
@@ -72,11 +72,13 @@ const AttendancePage = () => {
     }
   }, [isSuccessPostAttendance, isErrorPostAttendance]);
   // 출석 체크 버튼 핸들러
-  const handleAttendanceCheck = useCallback(() => {
+  const handleAttendanceCheck = async () => {
     if (isChecked) return;
 
-    mutatePostAttendance();
-  }, [isChecked]);
+    await mutatePostAttendance();
+    refetchConsecutiveAttendance();
+    refetchAttendanceToday();
+  };
 
   // 팝업 닫을 때 출석 체크 확정
   const handleClosePopup = () => {
