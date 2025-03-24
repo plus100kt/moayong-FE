@@ -3,16 +3,14 @@
 import Link from "next/link";
 import { TopBarWithBackButton } from "src/_components/TopBarWithBackButton";
 import { useQuery } from "@tanstack/react-query";
-import { getDailyQuizByMemberId, getMe } from "src/_api/api";
+import { getDailyQuizByMemberId } from "src/_api/api";
 import { ChevronRightIcon } from "lucide-react";
 import coinIcon from "src/assets/icon-coin.svg";
 import Image from "next/image";
+import { useAuth } from "src/_hooks/auth";
 
 export default function QuizDetail() {
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getMe(),
-  });
+  const { user } = useAuth();
 
   const { data: quiz } = useQuery({
     queryKey: ["dailyQuiz"],

@@ -2,29 +2,26 @@
 
 import { TopBarWithBackButton } from "src/_components/TopBarWithBackButton";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getDailyQuizByMemberId, getMe, getSolvedQuiz, showQuiz, submitQuiz } from "src/_api/api";
+import { getSolvedQuiz, showQuiz, submitQuiz } from "src/_api/api";
 
 import deco from "src/assets/images/icon-deco.png";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "src/_lib/utils";
+import { useAuth } from "src/_hooks/auth";
 
 export default function PastQuizDetail() {
   const { quizId } = useParams();
-  console.log(quizId);
+
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState<string>("");
   const router = useRouter();
+  const { user } = useAuth();
 
   const quizIdNumber = Number(quizId);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answerDescription, setAnswerDescription] = useState<string>("");
-
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getMe(),
-  });
 
   const { data: quiz } = useQuery({
     queryKey: ["quiz"],

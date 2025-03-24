@@ -12,14 +12,11 @@ import calendar from "src/assets/images/icon-calendar.png";
 import deco from "src/assets/images/icon-deco.png";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getAttendanceToday, getConsecutiveAttendance, getMe, postAttendance } from "src/_api/api";
+import { getAttendanceToday, getConsecutiveAttendance, postAttendance } from "src/_api/api";
 import { AxiosError } from "axios";
-
+import { useAuth } from "src/_hooks/auth";
 const AttendancePage = () => {
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getMe(),
-  });
+  const { user } = useAuth();
   const router = useRouter();
   const [attendanceDates, setAttendanceDates] = useState<Date[]>([
     new Date(2025, 4, 5),

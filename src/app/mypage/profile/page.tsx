@@ -7,22 +7,16 @@ import Image from "next/image";
 import { GoogleIcon } from "src/components/common/Icons";
 import { useRouter } from "next/navigation";
 import Button from "src/_components/Button";
-import { useQuery } from "@tanstack/react-query";
-import { getMe } from "src/_api/api";
-import { cn } from "src/_lib/utils";
 
+import { cn } from "src/_lib/utils";
+import { useAuth } from "src/_hooks/auth";
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [nickname, setNickname] = useState("도롱이");
   const [nicknameError, setNicknameError] = useState<string | null>(null);
   const [monthlyIncome, setMonthlyIncome] = useState(200);
   const [monthlySavingsTarget, setMonthlySavingsTarget] = useState(600000);
-
-  // react query getMe에서 받아오는 데이터
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getMe(),
-  });
+  const { user } = useAuth();
 
   useEffect(() => {
     if (user) {

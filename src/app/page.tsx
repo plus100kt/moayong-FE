@@ -12,26 +12,22 @@ import {
   getAttendanceToday,
   getLeague,
   getMatch,
-  getMe,
   getSeasonOpen,
   getTotalAmountByUserId,
 } from "src/_api/api";
 import dayjs from "dayjs";
 import { AttendanceResponse, LeagueResponse, MatchResponse, SeasonResponse } from "src/_types/type";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { SemiCircleProgress } from "src/_components/SemiCircleProgress";
 import { BottomNav } from "src/_components/BottomNav";
 import { getDaysDiff } from "src/_lib/utils";
+import { useAuth } from "src/_hooks/auth";
 
 export default function Home() {
   const router = useRouter();
   const [thisMonthSavingRate, setThisMonthSavingRate] = useState(0);
   const [thisWeekSavingGoal, setThisWeekSavingGoal] = useState("");
-
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getMe(),
-  });
+  const { user } = useAuth();
 
   // 누적 저축 금액
   const { data: totalSavings } = useQuery({

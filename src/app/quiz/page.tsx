@@ -5,17 +5,13 @@ import { QuizListItem } from "./_components/QuizListItem";
 import { useRouter } from "next/navigation";
 import { TopBarWithBackButton } from "src/_components/TopBarWithBackButton";
 import Button from "src/_components/Button";
-import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
-import { getMe, getDailyQuizByMemberId, getAllSolvedQuizzesByUserId } from "src/_api/api";
+import { getDailyQuizByMemberId, getAllSolvedQuizzesByUserId } from "src/_api/api";
+import { useAuth } from "src/_hooks/auth";
 
 export default function Quiz() {
   const router = useRouter();
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => getMe(),
-  });
-
+  const { user } = useAuth();
   const { data: quiz } = useQuery({
     queryKey: ["quiz"],
     queryFn: () => getDailyQuizByMemberId(user?.id),
