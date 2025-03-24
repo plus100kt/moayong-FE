@@ -4,41 +4,18 @@ import { CalendarIcon, FlameIcon, MedalIcon, CoinIcon } from "src/components/com
 import { StatCard } from "./_components/StatCard";
 import { MenuItem } from "./_components/MenuItem";
 import { BottomNav } from "../../_components/BottomNav";
-
-const stats = [
-  {
-    icon: <CalendarIcon />,
-    label: "연속 출석일",
-    value: 18,
-    unit: "일",
-    iconColor: "text-green-600",
-  },
-  {
-    icon: <FlameIcon />,
-    label: "최대 연속 출석일",
-    value: 53,
-    unit: "일",
-
-    valueColor: "text-danger",
-  },
-  {
-    icon: <CoinIcon />,
-    label: "누적 저축 금액",
-    value: "1,000,000",
-    unit: "원",
-    valueColor: "text-gray-80",
-  },
-  {
-    icon: <MedalIcon />,
-    label: "현재 리그",
-    value: "아기용",
-    valueColor: "text-gray-80",
-  },
-];
+import { useAuth } from "src/_hooks/auth";
+import {
+  getConsecutiveAttendance,
+  getLeague,
+  getMatch,
+  getTotalAmountByUserId,
+} from "src/_api/api";
+import { useQuery } from "@tanstack/react-query";
 
 const memberMenus = [
-  { href: "/myinfo", label: "나의 정보 수정" },
-  { href: "/stats", label: "내 통장 수정" },
+  { href: "/mypage/profile", label: "나의 정보 수정" },
+  { href: "/mypage/account", label: "내 통장 수정" },
 ];
 
 const serviceMenus = [
@@ -47,6 +24,29 @@ const serviceMenus = [
 ];
 
 export default function MyPage() {
+  const { user } = useAuth();
+
+  // 연속 출석일
+  const { data: consecutiveAttendance } = useQuery({
+    queryKey: ["consecutiveAttendance"],
+    queryFn: () => getConsecutiveAttendance(user?.id),
+    enabled: !!user,
+  });
+
+  // 누적 저축 금액
+  const { data: totalAmount } = useQuery({
+    queryKey: ["totalAmount"],
+    queryFn: () => getTotalAmountByUserId(user?.id),
+    enabled: !!user,
+  });
+
+  // 리그
+  const { data: league } = useQuery({
+    queryKey: ["league"],
+    queryFn: () => getLeague(user?.id),
+    enabled: !!user,
+  });
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <div>
@@ -55,9 +55,33 @@ export default function MyPage() {
 
           {/* Stats Grid */}
           <div className="grid grid-cols-2 gap-3 px-5 py-6">
-            {stats.map((stat, index) => (
-              <StatCard key={index} {...stat} />
-            ))}
+            <StatCard
+              icon={<CalendarIcon />}
+              label="연속 출석일"
+              value={consecutiveAttendance?.currentConsecutiveDate}
+              unit="일"
+              iconColor="text-green-600"
+            />
+            <StatCard
+              icon={<FlameIcon />}
+              label="최대 연속 출석일"
+              value={consecutiveAttendance?.maxConsecutiveDate}
+              unit="일"
+              valueColor="text-danger"
+            />
+            <StatCard
+              icon={<CoinIcon />}
+              label="누적 저축 금액"
+              value={totalAmount?.toLocaleString()}
+              unit="원"
+              valueColor="text-gray-80"
+            />
+            <StatCard
+              icon={<MedalIcon />}
+              label="현재 리그"
+              value={league?.name}
+              valueColor="text-gray-80"
+            />
           </div>
         </div>
 

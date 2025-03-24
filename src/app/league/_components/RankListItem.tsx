@@ -10,7 +10,6 @@ interface RankListItemProps {
 }
 
 export const RankListItem = ({ isActive, leagueMember, rank }: RankListItemProps) => {
-  console.log("leagueMember");
   return (
     <div
       className={cn(

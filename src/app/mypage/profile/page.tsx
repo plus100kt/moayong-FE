@@ -10,31 +10,51 @@ import Button from "src/_components/Button";
 
 import { cn } from "src/_lib/utils";
 import { useAuth } from "src/_hooks/auth";
+import { useMutation } from "@tanstack/react-query";
+import { updateUser } from "src/_api/api";
+import { UserPutRequest } from "src/_types/type";
+
 export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
-  const [nickname, setNickname] = useState("도롱이");
+  const [nickname, setNickname] = useState("");
   const [nicknameError, setNicknameError] = useState<string | null>(null);
-  const [monthlyIncome, setMonthlyIncome] = useState(200);
-  const [monthlySavingsTarget, setMonthlySavingsTarget] = useState(600000);
+  const [monthlyIncome, setMonthlyIncome] = useState(0);
+  const [savingsRate, setSavingsRate] = useState<string>("0");
   const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     if (user) {
       setNickname(user.nickname);
       setMonthlyIncome(user.monthlySalary);
-      setMonthlySavingsTarget(user.monthlySalary * user.savingsRate);
+      setSavingsRate(String(user.savingsRate));
     }
   }, [user]);
 
-  const router = useRouter();
+  const {
+    mutate: mutateUpdateUser,
+    isSuccess: isSuccessUpdateUser,
+    isPending: isMutateLoading,
+  } = useMutation({
+    mutationFn: (data: UserPutRequest) => updateUser(user?.id, data),
+  });
 
   const handleSubmit = () => {
     if (isEditing) {
-      setIsEditing(false);
+      mutateUpdateUser({
+        nickname,
+        monthlySalary: monthlyIncome,
+        savingsRate: Number(savingsRate),
+      });
     } else {
       setIsEditing(true);
     }
   };
+  useEffect(() => {
+    if (isSuccessUpdateUser) {
+      setIsEditing(false);
+    }
+  }, [isSuccessUpdateUser]);
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -43,9 +63,17 @@ export default function ProfilePage() {
   };
 
   const handleMonthlyIncomeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 첫번째 숫자가 0이면 0 자동 삭제
-    const value = e.target.value;
-    setMonthlyIncome(Number(value));
+    const value = e.target.value.replace(/[^0-9]/g, "");
+    if (value === "" || (Number(value) >= 0 && Number(value) <= 100000)) {
+      setMonthlyIncome(Number(value));
+    }
+  };
+
+  const handleSavingsRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^0-9]/g, "");
+    if (value === "" || (Number(value) >= 0 && Number(value) <= 100)) {
+      setSavingsRate(value);
+    }
   };
 
   const labelClassName = "label-sm text-gray-50 block";
@@ -96,7 +124,7 @@ export default function ProfilePage() {
             {/* Nickname Input */}
             <div>
               <label className={labelClassName}>닉네임</label>
-              <div className="relative">
+              <div className="relative flex-1">
                 <input
                   type="text"
                   value={nickname}
@@ -104,10 +132,10 @@ export default function ProfilePage() {
                   readOnly={!isEditing}
                   className={inputClassName}
                 />
-                {isEditing && nickname && (
+                {isEditing && (
                   <button
                     onClick={() => setNickname("")}
-                    className="absolute right-4 top-1/2 -translate-y-1/2"
+                    className="absolute right-0 top-1/2 -translate-y-1/2"
                   >
                     <X className="w-5 h-5 text-gray-400" />
                   </button>
@@ -119,7 +147,7 @@ export default function ProfilePage() {
             {/* Monthly Income */}
             <div>
               <label className={labelClassName}>월 급여</label>
-              <div className="flex items-center">
+              <div className="flex items-center relative">
                 <input
                   type="number"
                   value={monthlyIncome}
@@ -127,43 +155,58 @@ export default function ProfilePage() {
                   readOnly={!isEditing}
                   className={inputClassName}
                 />
-                <span className="ml-2 text-gray-600">만원</span>
+                <span className="ml-2 text-gray-600 absolute right-0">만원</span>
               </div>
             </div>
 
             {/* Monthly Savings Target */}
             <div>
               <label className={labelClassName}>월 저축 목표</label>
-              <div className={inputClassName}>
-                <span>월 급여의 30% · 600,000 원</span>
-              </div>
-              {isEditing && (
-                <p className="text-sm mt-2 text-gray-600">
-                  · 월 60만원 저축을 목표로 <span className="text-green-500">매주 15만원</span> 저축
-                  해야해요.
-                  <br />· 다음 리그부터 수정한 저축액이 반영돼요.
-                </p>
+
+              {isEditing ? (
+                <div className="flex items-center relative">
+                  <input
+                    type="text"
+                    value={savingsRate}
+                    onChange={handleSavingsRateChange}
+                    readOnly={!isEditing}
+                    className={`${inputClassName} w-full`}
+                  />
+                  <span className="ml-2 text-gray-600 absolute right-0">%</span>
+                </div>
+              ) : (
+                <div className="outline-none py-2.5 title-md w-full text-gray-50 rounded-lg placeholder:text-gray-50 focus:text-gray-80">
+                  월 급여의 {savingsRate}% ·{" "}
+                  {Number(monthlyIncome * 100 * Number(savingsRate)).toLocaleString()} 원
+                </div>
               )}
             </div>
+            {isEditing && (
+              <p className="caption-md mt-2 text-gray-50">
+                · 월 60만원 저축을 목표로 <span className="text-green-500">매주 15만원</span> 저축
+                해야해요.
+                <br />· 다음 리그부터 수정한 저축액이 반영돼요.
+              </p>
+            )}
           </div>
         </section>
 
         {/* Withdraw Section */}
-        {/* {!isEditing ? (
+        {!isEditing ? (
           <section className="mt-8 pb-8">
             <button className=" label-md text-gray-70 underline">회원 탈퇴하기</button>
           </section>
-        ) : null} */}
+        ) : null}
       </div>
 
       {/* Submit Button */}
       <div className="px-5 py-4">
         <Button.Default
-          disabled={isEditing && Boolean(nicknameError)}
+          disabled={(isEditing && Boolean(nicknameError)) || isMutateLoading}
           onClick={handleSubmit}
           className="w-full"
         >
-          {isEditing ? "수정완료" : "수정하기"}
+          {isMutateLoading ? "수정중..." : isEditing ? "수정완료" : "수정하기"}
         </Button.Default>
       </div>
     </div>

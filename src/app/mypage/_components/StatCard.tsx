@@ -23,7 +23,7 @@ export function StatCard({
         {icon}
         <span className="caption-md text-gray-60">{label}</span>
       </div>
-      <p className={cn("title-lg", valueColor)}>
+      <p className={cn("title-lg font-medium", valueColor)}>
         {value}
         {unit && <span>{unit}</span>}
       </p>
