@@ -157,8 +157,6 @@ const RegisterPage = () => {
     const slideDirection = isGoingBack ? { opacity: 0, y: 50 } : { opacity: 1, y: 0 };
     const slideAnimate = isGoingBack ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 };
 
-    console.log("currentSlide", currentSlide);
-    console.log("inputValues", inputValues);
     switch (currentSlide) {
       case 0:
         return (

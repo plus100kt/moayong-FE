@@ -76,6 +76,10 @@ export default function ProfilePage() {
     }
   };
 
+  const handleWithdraw = () => {
+    router.push("/withdraw");
+  };
+
   const labelClassName = "label-sm text-gray-50 block";
   const inputClassName = cn(
     "outline-none py-2.5 title-md w-full",
@@ -193,9 +197,9 @@ export default function ProfilePage() {
 
         {/* Withdraw Section */}
         {!isEditing ? (
-          <section className="mt-8 pb-8">
+          <div className="mt-8 pb-8" onClick={handleWithdraw}>
             <button className=" label-md text-gray-70 underline">회원 탈퇴하기</button>
-          </section>
+          </div>
         ) : null}
       </div>
 
