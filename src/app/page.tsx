@@ -22,6 +22,7 @@ import { SemiCircleProgress } from "src/_components/SemiCircleProgress";
 import { BottomNav } from "src/_components/BottomNav";
 import { getDaysDiff } from "src/_lib/utils";
 import { useAuth } from "src/_hooks/auth";
+import { badgeBgColor, badgeTextColor, promotionText } from "src/_lib/rank";
 
 export default function Home() {
   const router = useRouter();
@@ -50,16 +51,12 @@ export default function Home() {
     enabled: !!user?.id,
   });
 
-  console.log("seasonOpen", seasonOpen);
-
   // getLeague
   const { data: league, refetch: refetchLeague } = useQuery<LeagueResponse>({
     queryKey: ["league"],
     queryFn: () => getLeague(match?.leagueId),
     enabled: !!match?.leagueId,
   });
-  console.log("match", match);
-  console.log("league", league);
 
   const { data: attendanceToday } = useQuery<AttendanceResponse>({
     queryKey: ["attendanceToday"],
@@ -95,6 +92,7 @@ export default function Home() {
 
     setThisWeekSavingGoal(thisWeekSaving);
   };
+  console.log("match", match);
 
   return (
     <div className="flex flex-col bg-gray-5 min-h-screen">
@@ -151,7 +149,10 @@ export default function Home() {
         </div>
 
         {match && (
-          <div className="shadow-card-shadow bg-white px-5 h-[140px] rounded-2xl  flex justify-between items-center">
+          <div
+            className="shadow-card-shadow bg-white px-5 h-[140px] rounded-2xl  flex justify-between items-center cursor-pointer"
+            onClick={() => router.push("/league")}
+          >
             <div className="flex flex-col justify-center">
               <div className="flex flex-col gap-1 pb-3">
                 <p className="label-sm gray-50">
@@ -164,8 +165,12 @@ export default function Home() {
                 <p className="title-sm text-gray-90">{league?.name} 진행 중</p>
               </div>
               <div className="flex gap-1">
-                <Badge variant="primary">승급가능</Badge>
-                <Badge variant="gray">상위 {match?.rank}%</Badge>
+                <Badge variant={badgeBgColor[match.promotionStatus]}>
+                  {promotionText[match.promotionStatus]}
+                </Badge>
+                <Badge variant={badgeTextColor[match.promotionStatus]} isGrayBg>
+                  상위 {match?.rate}%
+                </Badge>
               </div>
             </div>
             <div>

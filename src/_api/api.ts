@@ -16,6 +16,8 @@ import type {
   QuizSubmissionResponse,
   QuizKnowledgeResponse,
   SeasonResponse,
+  LeagueMemberResponse,
+  MemberRankingResponse,
 } from "src/_types/type";
 
 const BASE_URL = "https://api.moayong.com/api/v1";
@@ -148,7 +150,9 @@ export const getMember = (id: number) =>
   api.get<LeagueMember>(`/members/${id}`).then((res) => res.data);
 
 export const getMembersByLeagueId = (leagueId: number) =>
-  api.get<LeagueMember[]>(`/leagues/${leagueId}/members`).then((res) => res.data);
+  api
+    .get<{ data: LeagueMemberResponse[] }>(`/leagues/${leagueId}/members`)
+    .then((res) => res.data.data);
 
 export const getMembersByUserId = (userId: number) =>
   api.get<LeagueMember[]>(`/users/${userId}/members`).then((res) => res.data);
@@ -157,7 +161,9 @@ export const getActiveMemberByUserId = (userId: number) =>
   api.get<LeagueMember>(`/users/${userId}/members/active`).then((res) => res.data);
 
 export const getMemberRankingByLeagueId = (leagueId: number) =>
-  api.get<LeagueMember[]>(`/leagues/${leagueId}/members/ranking`).then((res) => res.data);
+  api
+    .get<{ data: MemberRankingResponse[] }>(`/leagues/${leagueId}/members/ranking`)
+    .then((res) => res.data.data);
 
 // Quiz APIs
 export const getDailyQuizByMemberId = (memberId: number) =>

@@ -12,6 +12,15 @@ export interface LeagueMemberResponse {
   totalScore: number;
   goalAmount: number;
 }
+export interface MemberRankingResponse {
+  memberId: number;
+  nickname: string;
+  promotionStatus: PromotionStatus;
+  rank: number;
+  rate: number;
+  userId: number;
+  totalScore: number;
+}
 
 export enum LeagueMemberStatus {
   ACTIVE,
@@ -127,9 +136,9 @@ export interface MatchResponse {
 }
 
 export enum PromotionStatus {
-  PROMOTION,
-  RELEGATION,
-  SUSPENDED,
+  PROMOTION = "PROMOTION", // 승급
+  RELEGATION = "RELEGATION", // 강등
+  SUSPENDED = "SUSPENDED", // 정지
 }
 
 export interface AttendanceResponse {
