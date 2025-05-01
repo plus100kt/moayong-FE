@@ -92,10 +92,7 @@ export default function Home() {
 
     setThisWeekSavingGoal(thisWeekSaving);
   };
-
-  if (!user) {
-    return <div>로딩중...</div>;
-  }
+  console.log("match", match);
 
   return (
     <div className="flex flex-col bg-gray-5 min-h-screen pb-20">
