@@ -1,6 +1,5 @@
-"use client";
-import LoginSuccessPageTemplate from "./pageTemplate";
+import LoginSuccessPageWrapper from "./LoginSuccessPageWrapper";
 
-export default function LoginSuccessPage() {
-  return <LoginSuccessPageTemplate />;
+export default function Page() {
+  return <LoginSuccessPageWrapper />;
 }

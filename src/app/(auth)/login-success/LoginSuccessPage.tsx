@@ -1,4 +1,5 @@
 "use client";
+
 import { LoaderPinwheel } from "lucide-react";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -13,15 +14,14 @@ const LoginSuccessPage = () => {
   const role = searchParams.get("role");
 
   const {
-    data: dataUser,
     isSuccess: isUserSuccess,
     isError: isUserError,
     error: userError,
   } = useQuery<UserResponse, AxiosError>({
     queryKey: ["get-user"],
-    queryFn: () => getMe(),
+    queryFn: getMe,
     retry: false,
-    enabled: role !== "ONBOARDING", // ONBOARDING이면 요청 자체를 막음
+    enabled: role !== "ONBOARDING",
   });
 
   useEffect(() => {
