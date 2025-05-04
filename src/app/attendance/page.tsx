@@ -35,7 +35,7 @@ const AttendancePage = () => {
 
   const { data: attendances } = useQuery({
     queryKey: ["attendances", month.getFullYear(), month.getMonth()],
-    queryFn: () => getAttendancesByMonth(user?.id, `${month.getFullYear()}-${month.getMonth()}`),
+    queryFn: () => getAttendancesByMonth(user?.id, `${month.getFullYear()}-${String(month.getMonth()+1).padStart(2, '0')}`),
     enabled: !!user,
   });
 
