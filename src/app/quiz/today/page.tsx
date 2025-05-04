@@ -16,7 +16,7 @@ export default function QuizDetail() {
 
   const { data: quiz } = useQuery({
     queryKey: ["dailyQuiz"],
-    queryFn: () => getDailyQuizByMemberId(user?.id),
+    queryFn: () => getDailyQuizByMemberId(activeMember?.id),
     enabled: !!activeMember?.id,
   });
 

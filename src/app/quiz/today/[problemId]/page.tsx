@@ -1,7 +1,7 @@
 "use client";
 
 import { TopBarWithBackButton } from "src/_components/TopBarWithBackButton";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { showQuiz, submitQuiz } from "src/_api/api";
 import check from "src/assets/icon-check-green.svg";
 import close from "src/assets/icon-close.svg";
@@ -22,12 +22,11 @@ export default function ProblemDetail() {
   const router = useRouter();
   const { user } = useAuth();
   const { activeMember } = useActiveMember(user?.id);
+  const queryClient = useQueryClient();
 
   const problemIdNumber = Number(problemId);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [answerDescription, setAnswerDescription] = useState<string>(
-    "로딩중"
-  );
+  const [answerDescription, setAnswerDescription] = useState<string | null>(null);
 
   const { data: problem } = useQuery({
     queryKey: ["problem"],
@@ -63,6 +62,7 @@ export default function ProblemDetail() {
 
   useEffect(() => {
     if (isSuccess) {
+      queryClient.invalidateQueries({ queryKey: ['solvedQuiz'] });
       if (submitQuizData.status === "CORRECT") {
         setPopupMessage("정답이에요!");
         setShowPopup(true);
@@ -157,7 +157,10 @@ export default function ProblemDetail() {
             <Image src={deco} alt="출석 완료" className="mx-auto mb-4 absolute top-[-43%]" />
             <p className="title-md text-gray-40 whitespace-pre-line">{popupMessage}</p>
             <button
-              onClick={() => setShowPopup(false)}
+              onClick={() => {
+                setShowPopup(false);
+                router.replace("/quiz");
+              }}
               className="text-green-50 title-xs mb-[25px] mt-[33px]"
             >
               확인
