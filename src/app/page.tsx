@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getAttendanceToday,
   getLeague,
+  getMatch,
   getSeasonOpen,
   getTotalAmountByUserId,
 } from "src/_api/api";
@@ -22,14 +23,14 @@ import { BottomNav } from "src/_components/BottomNav";
 import { getDaysDiff } from "src/_lib/utils";
 import { useAuth } from "src/_hooks/auth";
 import { badgeBgColor, badgeTextColor, promotionText } from "src/_lib/rank";
-import { useMatch } from "src/_hooks/match";
+import { useActiveMember } from "src/_hooks/activeMember";
 
 export default function Home() {
   const router = useRouter();
   const [thisMonthSavingRate, setThisMonthSavingRate] = useState(0);
   const [thisWeekSavingGoal, setThisWeekSavingGoal] = useState("");
   const { user } = useAuth();
-  const { match } = useMatch(user?.id);
+  const { activeMember } = useActiveMember(user?.id);
 
   // 누적 저축 금액
   const { data: totalSavings } = useQuery({
@@ -37,6 +38,14 @@ export default function Home() {
     queryFn: () => getTotalAmountByUserId(user?.id),
     enabled: !!user?.id,
   });
+
+   // GET members/{id}/match
+   const { data: match, isSuccess: isMatchSuccess } = useQuery<MatchResponse>({
+    queryKey: ["match"],
+    queryFn: () => getMatch(activeMember?.id),
+    enabled: !!user?.id,
+  });
+
 
   // /seasons
   const { data: seasonOpen, isSuccess: isSeasonOpenSuccess } = useQuery<SeasonResponse>({
@@ -48,15 +57,21 @@ export default function Home() {
   // getLeague
   const { data: league, refetch: refetchLeague } = useQuery<LeagueResponse>({
     queryKey: ["league"],
-    queryFn: () => getLeague(match?.leagueId),
-    enabled: !!match?.leagueId,
+    queryFn: () => getLeague(activeMember?.leagueId),
+    enabled: !!activeMember?.leagueId,
   });
 
   const { data: attendanceToday } = useQuery<AttendanceResponse>({
     queryKey: ["attendanceToday"],
-    queryFn: () => getAttendanceToday(match?.memberId),
-    enabled: !!match?.memberId,
+    queryFn: () => getAttendanceToday(activeMember?.id),
+    enabled: !!activeMember?.id,
   });
+
+  useEffect(() => {
+    if (isMatchSuccess) {
+      refetchLeague();
+    }
+  }, [match, isMatchSuccess]);
 
   useEffect(() => {
     calculateThisWeekSavingGoal();
@@ -80,7 +95,7 @@ export default function Home() {
 
     setThisWeekSavingGoal(thisWeekSaving);
   };
-  console.log("match", match);
+  console.log("member", activeMember);
 
   return (
     <div className="flex flex-col bg-gray-5 min-h-screen pb-20">

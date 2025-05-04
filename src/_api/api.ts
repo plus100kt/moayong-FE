@@ -170,7 +170,7 @@ export const getMembersByUserId = (userId: number) =>
   api.get<LeagueMember[]>(`/users/${userId}/members`).then((res) => res.data);
 
 export const getActiveMemberByUserId = (userId: number) =>
-  api.get<LeagueMember>(`/users/${userId}/members/active`).then((res) => res.data);
+  api.get<{ data: LeagueMember }>(`/users/${userId}/members/active`).then((res) => res.data.data);
 
 export const getMemberRankingByLeagueId = (leagueId: number) =>
   api
