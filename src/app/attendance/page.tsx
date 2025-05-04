@@ -12,9 +12,11 @@ import calendar from "src/assets/images/icon-calendar.png";
 import deco from "src/assets/images/icon-deco.png";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getAttendanceToday, getConsecutiveAttendance, postAttendance } from "src/_api/api";
+import { getAttendanceToday, getConsecutiveAttendance, getMatchByUserId, postAttendance } from "src/_api/api";
 import { AxiosError } from "axios";
 import { useAuth } from "src/_hooks/auth";
+import { MatchResponse } from "src/_types/type";
+import { useMatch } from "src/_hooks/match";
 const AttendancePage = () => {
   const { user } = useAuth();
   const router = useRouter();
@@ -26,6 +28,7 @@ const AttendancePage = () => {
   const [date, setDate] = useState<Date>(new Date());
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState<boolean>(false);
+  const { match } = useMatch(user?.id);
 
   // 출석 정보 가져오기 (초기 로드)
   const { data: consecutiveAttendance, refetch: refetchConsecutiveAttendance } = useQuery({
@@ -36,8 +39,8 @@ const AttendancePage = () => {
 
   const { data: attendanceToday, refetch: refetchAttendanceToday } = useQuery({
     queryKey: ["attendanceToday"],
-    queryFn: () => getAttendanceToday(user?.id),
-    enabled: !!user,
+    queryFn: () => getAttendanceToday(match?.memberId),
+    enabled: !!match,
   });
 
   useEffect(() => {

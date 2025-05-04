@@ -11,7 +11,6 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getAttendanceToday,
   getLeague,
-  getMatch,
   getSeasonOpen,
   getTotalAmountByUserId,
 } from "src/_api/api";
@@ -23,24 +22,19 @@ import { BottomNav } from "src/_components/BottomNav";
 import { getDaysDiff } from "src/_lib/utils";
 import { useAuth } from "src/_hooks/auth";
 import { badgeBgColor, badgeTextColor, promotionText } from "src/_lib/rank";
+import { useMatch } from "src/_hooks/match";
 
 export default function Home() {
   const router = useRouter();
   const [thisMonthSavingRate, setThisMonthSavingRate] = useState(0);
   const [thisWeekSavingGoal, setThisWeekSavingGoal] = useState("");
   const { user } = useAuth();
+  const { match } = useMatch(user?.id);
 
   // 누적 저축 금액
   const { data: totalSavings } = useQuery({
     queryKey: ["totalSavings"],
     queryFn: () => getTotalAmountByUserId(user?.id),
-    enabled: !!user?.id,
-  });
-
-  // GET members/{id}/match
-  const { data: match, isSuccess: isMatchSuccess } = useQuery<MatchResponse>({
-    queryKey: ["match"],
-    queryFn: () => getMatch(user?.id),
     enabled: !!user?.id,
   });
 
@@ -60,15 +54,9 @@ export default function Home() {
 
   const { data: attendanceToday } = useQuery<AttendanceResponse>({
     queryKey: ["attendanceToday"],
-    queryFn: () => getAttendanceToday(user?.id),
-    enabled: !!user?.id,
+    queryFn: () => getAttendanceToday(match?.memberId),
+    enabled: !!match?.memberId,
   });
-
-  useEffect(() => {
-    if (isMatchSuccess) {
-      refetchLeague();
-    }
-  }, [match, isMatchSuccess]);
 
   useEffect(() => {
     calculateThisWeekSavingGoal();
