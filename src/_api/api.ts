@@ -239,6 +239,21 @@ export const getConsecutiveAttendance = (userId: number) =>
     )
     .then((res) => res.data.data);
 
+    // 최대, 현재 연속 출석일
+export const getAttendancesByMonth = (userId: number, month: string) =>
+  api
+    .get<{ data: string[] }>(
+      `/users/${userId}/attendances`,
+      {
+        params: {
+          month
+        }
+      }
+    )
+    .then((res) => res.data.data).then(data =>
+      data.map(str => new Date(str))
+    );
+
 // 오늘 출석 체크 여부
 // GET members/{id}/attendances/today
 export const getAttendanceToday = (memberId: number) =>

@@ -12,18 +12,15 @@ import calendar from "src/assets/images/icon-calendar.png";
 import deco from "src/assets/images/icon-deco.png";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getAttendanceToday, getConsecutiveAttendance, postAttendance } from "src/_api/api";
+import { getAttendancesByMonth, getAttendanceToday, getConsecutiveAttendance, postAttendance } from "src/_api/api";
 import { AxiosError } from "axios";
 import { useAuth } from "src/_hooks/auth";
 import { useActiveMember } from "src/_hooks/activeMember";
 const AttendancePage = () => {
   const { user } = useAuth();
   const router = useRouter();
-  const [attendanceDates, setAttendanceDates] = useState<Date[]>([
-    new Date(2025, 4, 5),
-    new Date(2025, 4, 7),
-    new Date(2025, 4, 8),
-  ]);
+  const [attendanceDates, setAttendanceDates] = useState<Date[]>([]);
+  const [month, setMonth] = useState(new Date()); // 현재 달로 초기화
   const [date, setDate] = useState<Date>(new Date());
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const [showPopup, setShowPopup] = useState<boolean>(false);
@@ -33,6 +30,12 @@ const AttendancePage = () => {
   const { data: consecutiveAttendance, refetch: refetchConsecutiveAttendance } = useQuery({
     queryKey: ["consecutiveAttendance"],
     queryFn: () => getConsecutiveAttendance(user?.id),
+    enabled: !!user,
+  });
+
+  const { data: attendances } = useQuery({
+    queryKey: ["attendances", month.getFullYear(), month.getMonth()],
+    queryFn: () => getAttendancesByMonth(user?.id, `${month.getFullYear()}-${month.getMonth()}`),
     enabled: !!user,
   });
 
@@ -47,6 +50,13 @@ const AttendancePage = () => {
       setIsChecked(attendanceToday.attended);
     }
   }, [attendanceToday]);
+
+  useEffect(() => {
+    if (attendances) {
+      // 문자열 → Date 객체로 변환
+      setAttendanceDates(attendances);
+    }
+  }, [attendances]);
 
   // 출석체크 postAttendance
   const {
@@ -134,6 +144,9 @@ const AttendancePage = () => {
           attendanceDates={attendanceDates}
           currentDate={date}
           setDate={setDate}
+          onMonthChange={(newMonth) => {
+            setMonth(newMonth); // 상태 업데이트
+          }}
         />
       </div>
 

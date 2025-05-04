@@ -10,9 +10,10 @@ interface AttendanceCalendarProps {
   attendanceDates: Date[];
   currentDate: Date;
   setDate: Dispatch<SetStateAction<Date>>;
+  onMonthChange?: (month: Date) => void;
 }
 
-const AttendanceCalendar = ({ attendanceDates, currentDate, setDate }: AttendanceCalendarProps) => {
+const AttendanceCalendar = ({ attendanceDates, currentDate, setDate, onMonthChange }: AttendanceCalendarProps) => {
   const [view, setView] = useState<'month' | 'year' | 'decade' | 'century'>('month');
 
   // 날짜 포맷팅 함수 (yyyy-mm-dd)
@@ -41,11 +42,13 @@ const AttendanceCalendar = ({ attendanceDates, currentDate, setDate }: Attendanc
 
       // 1. 현재 주차 체크 (항상 배경 유지)
       const currentWeekStart = new Date(currentDate);
-      currentWeekStart.setDate(currentDate.getDate() - currentDate.getDay() + 1); // Week starts on Monday
+      const day = currentDate.getDay(); // 0(일) ~ 6(토)
+      const diffToMonday = day === 0 ? -6 : 1 - day; // 일요일은 -6, 월~토는 계산
+      currentWeekStart.setDate(currentDate.getDate() + diffToMonday);
       currentWeekStart.setHours(0, 0, 0, 0);
 
       const currentWeekEnd = new Date(currentWeekStart);
-      currentWeekEnd.setDate(currentWeekStart.getDate() + 6); // Week ends on Sunday
+      currentWeekEnd.setDate(currentWeekStart.getDate() + 6);
       currentWeekEnd.setHours(23, 59, 59, 999);
 
       // Date is within current week
@@ -103,6 +106,11 @@ const AttendanceCalendar = ({ attendanceDates, currentDate, setDate }: Attendanc
         `${date.getFullYear()}년 ${date.getMonth() + 1}월`
       }
       onViewChange={({ view }) => setView(view)}
+      onActiveStartDateChange={({ activeStartDate }) => {
+        if (activeStartDate) {
+          onMonthChange?.(activeStartDate); // 부모에 월 변경 알림
+        }
+      }}
       // onClickDay={(value) => setDate(value as Date)}
       next2Label={null} // >> 버튼 제거
       prev2Label={null} // << 버튼 제거
