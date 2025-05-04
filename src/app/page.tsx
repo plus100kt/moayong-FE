@@ -4,7 +4,6 @@ import Button from "src/_components/Button";
 import { CardButton } from "src/components/common/CardButton";
 import { Badge } from "src/components/common/Badge";
 import Image from "next/image";
-import DragonImage from "src/assets/images/dragon.png";
 import { CoinIcon, CalendarIcon, BulbIcon, LogoIcon } from "src/components/common/Icons";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";

@@ -13,6 +13,7 @@ import { cn } from "src/_lib/utils";
 import { useAuth } from "src/_hooks/auth";
 import { use } from "chai";
 import { AxiosError } from "axios";
+import { useActiveMember } from "src/_hooks/activeMember";
 
 export default function ProblemDetail() {
   const { problemId } = useParams();
@@ -20,17 +21,18 @@ export default function ProblemDetail() {
   const [popupMessage, setPopupMessage] = useState<string>("");
   const router = useRouter();
   const { user } = useAuth();
+  const { activeMember } = useActiveMember(user?.id);
 
   const problemIdNumber = Number(problemId);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [answerDescription, setAnswerDescription] = useState<string>(
-    "분산 투자는 투자 금액을 여러 종목이나 자산에 나누어 투자하는 방법입니다. 예를 들어, 100만원을 한 회사에 투자하면 그 회사에 문제가 생길 경우 큰 손실을 입을 수 있습니다. 반면, 100만원을 5개 회사에 나누어 투자하면 한 회사에서 손실이 발생해도 다른 회사에서 이익을 얻어 전체 손실을 줄일 수 있습니다. 이를 통해 한 곳의 부정적 상황이 전체 투자에 미치는 영향을 낮출 수 있습니다."
+    "로딩중"
   );
 
   const { data: problem } = useQuery({
     queryKey: ["problem"],
-    queryFn: () => showQuiz(user?.id, problemIdNumber),
-    enabled: !!user?.id && !!problemId,
+    queryFn: () => showQuiz(activeMember?.id, problemIdNumber),
+    enabled: !!activeMember?.id && !!problemId,
   });
 
   const {
@@ -40,7 +42,7 @@ export default function ProblemDetail() {
     error,
     isError,
   } = useMutation({
-    mutationFn: (answer: number) => submitQuiz(user?.id, problemIdNumber, answer),
+    mutationFn: (answer: number) => submitQuiz(activeMember?.id, problemIdNumber, answer),
   });
 
   const handleSubmit = () => {

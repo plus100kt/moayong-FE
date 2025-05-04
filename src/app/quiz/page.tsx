@@ -8,15 +8,17 @@ import Button from "src/_components/Button";
 import { useQuery } from "@tanstack/react-query";
 import { getDailyQuizByMemberId, getAllSolvedQuizzesByUserId } from "src/_api/api";
 import { useAuth } from "src/_hooks/auth";
+import { useActiveMember } from "src/_hooks/activeMember";
 
 export default function Quiz() {
   const router = useRouter();
   const { user } = useAuth();
+  const { activeMember } = useActiveMember(user?.id);
 
   const { data: quiz } = useQuery({
     queryKey: ["quiz"],
-    queryFn: () => getDailyQuizByMemberId(user?.id),
-    enabled: !!user?.id,
+    queryFn: () => getDailyQuizByMemberId(activeMember?.id),
+    enabled: !!activeMember?.id,
   });
 
   const { data: solvedQuizzes } = useQuery({

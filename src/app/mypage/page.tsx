@@ -8,10 +8,10 @@ import { useAuth } from "src/_hooks/auth";
 import {
   getConsecutiveAttendance,
   getLeague,
-  getMatch,
   getTotalAmountByUserId,
 } from "src/_api/api";
 import { useQuery } from "@tanstack/react-query";
+import { useActiveMember } from "src/_hooks/activeMember";
 
 const memberMenus = [
   { href: "/mypage/profile", label: "나의 정보 수정" },
@@ -25,6 +25,7 @@ const serviceMenus = [
 
 export default function MyPage() {
   const { user } = useAuth();
+  const { activeMember } = useActiveMember(user?.id);
 
   // 연속 출석일
   const { data: consecutiveAttendance } = useQuery({
@@ -43,8 +44,8 @@ export default function MyPage() {
   // 리그
   const { data: league } = useQuery({
     queryKey: ["league"],
-    queryFn: () => getLeague(user?.id),
-    enabled: !!user,
+    queryFn: () => getLeague(activeMember?.leagueId),
+    enabled: !!activeMember,
   });
 
   return (

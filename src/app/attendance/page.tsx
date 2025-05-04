@@ -55,7 +55,7 @@ const AttendancePage = () => {
     isError: isErrorPostAttendance,
     error: errorPostAttendance,
   } = useMutation({
-    mutationFn: () => postAttendance(user?.id),
+    mutationFn: () => postAttendance(activeMember?.id),
   });
 
   useEffect(() => {

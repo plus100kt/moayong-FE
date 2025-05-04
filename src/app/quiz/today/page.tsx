@@ -8,14 +8,16 @@ import { ChevronRightIcon } from "lucide-react";
 import coinIcon from "src/assets/icon-coin.svg";
 import Image from "next/image";
 import { useAuth } from "src/_hooks/auth";
+import { useActiveMember } from "src/_hooks/activeMember";
 
 export default function QuizDetail() {
   const { user } = useAuth();
+  const { activeMember } = useActiveMember(user?.id);
 
   const { data: quiz } = useQuery({
     queryKey: ["dailyQuiz"],
     queryFn: () => getDailyQuizByMemberId(user?.id),
-    enabled: !!user?.id,
+    enabled: !!activeMember?.id,
   });
 
   return (
