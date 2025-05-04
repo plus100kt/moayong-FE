@@ -9,12 +9,13 @@ import coinIcon from "src/assets/icon-coin.svg";
 import Image from "next/image";
 import { useAuth } from "src/_hooks/auth";
 import { useActiveMember } from "src/_hooks/activeMember";
+import dayjs from "dayjs";
 
 export default function QuizDetail() {
   const { user } = useAuth();
   const { activeMember } = useActiveMember(user?.id);
 
-  const { data: quiz } = useQuery({
+  const { data: dailyQuiz } = useQuery({
     queryKey: ["dailyQuiz"],
     queryFn: () => getDailyQuizByMemberId(activeMember?.id),
     enabled: !!activeMember?.id,
@@ -29,17 +30,17 @@ export default function QuizDetail() {
             <div className="title-xs text-gray-80">금융지식</div>
             <ChevronRightIcon />
           </div>
-          <div className="heading-sm text-gray-80 pb-4">{quiz?.financeTitle}</div>
+          <div className="heading-sm text-gray-80 pb-4">{dailyQuiz?.financeTitle}</div>
           {/* 이것이 제목 샘플입니다. 30바이트 */}
           <div className="flex gap-1 pb-4">
             <div className="label-sm text-gray-50">🗓️</div>
-            <div className="label-sm text-gray-50 pr-3">2025년 3월 1일</div>
+            <div className="label-sm text-gray-50 pr-3">{dayjs(dailyQuiz?.createdAt).format("YYYY년 M월 D일")}</div>
             <div className="label-sm text-gray-50">🕛</div>
             <div className="label-sm text-gray-50">소요시간 3분</div>
           </div>
         </div>
         <div className="py-8 px-6 rounded-2xl bg-gray-5">
-          <div className="text-[16px] text-gray-90  font-medium">{quiz?.financeDescription}</div>
+          <div className="text-[16px] text-gray-90  font-medium">{dailyQuiz?.financeDescription}</div>
         </div>
       </div>
       <div className="px-5 py-5 fixed bottom-0 left-0 right-0 bg-white">
@@ -49,10 +50,10 @@ export default function QuizDetail() {
       </div>
 
       <div>
-        {quiz ? (
+        {dailyQuiz ? (
           <div className="px-5 py-5 fixed bottom-0 left-0 right-0 ">
             <Link
-              href={`/quiz/today/${quiz.id}`}
+              href={`/quiz/today/${dailyQuiz.id}`}
               className="flex justify-center py-4 w-full rounded-2xl bg-green-50"
             >
               <button className="btn-primary label-lg text-white">정답 도전하기</button>

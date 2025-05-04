@@ -63,6 +63,7 @@ export default function ProblemDetail() {
   useEffect(() => {
     if (isSuccess) {
       queryClient.invalidateQueries({ queryKey: ['solvedQuiz'] });
+      queryClient.invalidateQueries({ queryKey: ['dailyQuiz'] });
       if (submitQuizData.status === "CORRECT") {
         setPopupMessage("정답이에요!");
         setShowPopup(true);
@@ -111,7 +112,7 @@ export default function ProblemDetail() {
             );
           })}
         </div>
-        {answerDescription !== "" && (
+        {!!answerDescription && (
           <div className="pt-6 pb-20">
             <div className="body-md text-gray-80 rounded-2xl bg-white shadow-[0px_0px_10px_0px_rgba(0,0,0,0.08)] px-6 py-4">
               {answerDescription}
@@ -159,7 +160,6 @@ export default function ProblemDetail() {
             <button
               onClick={() => {
                 setShowPopup(false);
-                router.replace("/quiz");
               }}
               className="text-green-50 title-xs mb-[25px] mt-[33px]"
             >

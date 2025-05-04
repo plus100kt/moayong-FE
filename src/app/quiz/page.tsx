@@ -48,11 +48,11 @@ export default function Quiz() {
         <section>
           <h3 className="title-sm text-gray-90 pb-4">하루 3분 금융지식 알아가기</h3>
           <ul className="flex flex-col gap-2">
-            {solvedQuizzes?.map((quiz) => (
+            {solvedQuizzes?.map((solvedQuizze) => (
               <QuizListItem
-                text={quiz.financeTitle}
+                text={solvedQuizze.financeTitle}
                 onClick={() => {
-                  router.push(`/quiz/past/${quiz.id}`);
+                  router.push(`/quiz/past/${solvedQuizze.id}`);
                 }}
               />
             ))}
