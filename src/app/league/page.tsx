@@ -6,21 +6,23 @@ import { RankListItem } from "./_components/RankListItem";
 import { useAuth } from "src/_hooks/auth";
 import { useQuery } from "@tanstack/react-query";
 import { getLeague, getMembersByLeagueId, getMemberRankingByLeagueId } from "src/_api/api";
+import { useActiveMember } from "src/_hooks/activeMember";
 
 const LeaguePage = () => {
   const { user } = useAuth();
+  const { activeMember } = useActiveMember(user?.id);
 
   const { data: league } = useQuery({
     queryKey: ["league"],
-    queryFn: () => getLeague(user?.id),
-    enabled: !!user?.id,
+    queryFn: () => getLeague(activeMember?.leagueId),
+    enabled: !!activeMember?.id,
   });
   console.log("league", league);
 
   const { data: leagueMembers } = useQuery({
     queryKey: ["members"],
-    queryFn: () => getMemberRankingByLeagueId(league?.seasonId),
-    enabled: !!league?.id,
+    queryFn: () => getMemberRankingByLeagueId(activeMember?.leagueId),
+    enabled: !!activeMember?.id,
   });
 
   if (!league && !leagueMembers) return <div>Loading...</div>;
