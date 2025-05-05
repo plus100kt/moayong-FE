@@ -3,6 +3,10 @@ export type UserType = {
   password: string;
 };
 
+export interface AttendanceDateResponse {
+  attendanceDates: string[];
+}
+
 export interface LeagueMemberResponse {
   id: number;
   userId: number;

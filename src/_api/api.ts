@@ -18,6 +18,7 @@ import type {
   SeasonResponse,
   LeagueMemberResponse,
   MemberRankingResponse,
+  AttendanceDateResponse,
 } from "src/_types/type";
 
 const BASE_URL = "https://api.moayong.com/api/v1";
@@ -242,7 +243,7 @@ export const getConsecutiveAttendance = (userId: number) =>
     // 최대, 현재 연속 출석일
 export const getAttendancesByMonth = (userId: number, month: string) =>
   api
-    .get<{ data: string[] }>(
+    .get<{ data: AttendanceDateResponse }>(
       `/users/${userId}/attendances`,
       {
         params: {
@@ -250,7 +251,7 @@ export const getAttendancesByMonth = (userId: number, month: string) =>
         }
       }
     )
-    .then((res) => res.data.data).then(data =>
+    .then((res) => res.data.data.attendanceDates).then(data =>
       data.map(str => new Date(str))
     );
 
