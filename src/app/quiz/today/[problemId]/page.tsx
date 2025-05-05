@@ -112,7 +112,7 @@ export default function ProblemDetail() {
             );
           })}
         </div>
-        {!!answerDescription && (
+        {!!submitQuizData?.answerDescription && (
           <div className="pt-6 pb-20">
             <div className="body-md text-gray-80 rounded-2xl bg-white shadow-[0px_0px_10px_0px_rgba(0,0,0,0.08)] px-6 py-4">
               {answerDescription}

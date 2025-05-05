@@ -25,11 +25,10 @@ export default function PastQuizDetail() {
   const [answerDescription, setAnswerDescription] = useState<string>("");
 
   const { data: quiz } = useQuery({
-    queryKey: ["quiz"],
+    queryKey: ["quiz", quizIdNumber],
     queryFn: () => getSolvedQuiz(user?.id, quizIdNumber),
     enabled: !!user?.id && !!quizIdNumber,
   });
-  console.log(quiz);
 
   return (
     <div className="flex flex-col min-h-screen">

@@ -16,7 +16,7 @@ export default function Quiz() {
   const { activeMember } = useActiveMember(user?.id);
 
   const { data: quiz } = useQuery({
-    queryKey: ["quiz"],
+    queryKey: ["dailyQuiz"],
     queryFn: () => getDailyQuizByMemberId(activeMember?.id),
     enabled: !!activeMember?.id,
   });
@@ -61,7 +61,15 @@ export default function Quiz() {
       </div>
       <div className="px-5 py-5 fixed bottom-0 left-0 right-0">
         {quiz ? (
-          <Button.Default onClick={() => router.push(`/quiz/today/${quiz?.id}`)} className="w-full">
+          <Button.Default
+            onClick={() => {
+              if (quiz?.id) {
+                router.push(`/quiz/today/${quiz.id}`);
+              }
+            }}
+            disabled={!quiz}
+            className="w-full"
+          >
             퀴즈 도전하기
           </Button.Default>
         ) : (

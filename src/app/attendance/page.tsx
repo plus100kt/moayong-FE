@@ -33,7 +33,7 @@ const AttendancePage = () => {
     enabled: !!user,
   });
 
-  const { data: attendances } = useQuery({
+  const { data: attendances, refetch: refetchAttendances } = useQuery({
     queryKey: ["attendances", month.getFullYear(), month.getMonth()],
     queryFn: () => getAttendancesByMonth(user?.id, `${month.getFullYear()}-${String(month.getMonth()+1).padStart(2, '0')}`),
     enabled: !!user,
@@ -52,8 +52,8 @@ const AttendancePage = () => {
   }, [attendanceToday]);
 
   useEffect(() => {
+    console.log("attendances changed", attendances);
     if (attendances) {
-      // 문자열 → Date 객체로 변환
       setAttendanceDates(attendances);
     }
   }, [attendances]);
@@ -71,7 +71,6 @@ const AttendancePage = () => {
   useEffect(() => {
     if (isSuccessPostAttendance) {
       setShowPopup(true);
-      setAttendanceDates((prev) => [...prev, new Date()]);
     }
 
     if (isErrorPostAttendance) {
@@ -90,6 +89,7 @@ const AttendancePage = () => {
     await mutatePostAttendance();
     refetchConsecutiveAttendance();
     refetchAttendanceToday();
+    refetchAttendances();
   };
 
   // 팝업 닫을 때 출석 체크 확정
@@ -97,6 +97,8 @@ const AttendancePage = () => {
     setShowPopup(false);
     setIsChecked(true); // 팝업 닫을 때 isChecked 적용
   };
+
+  console.log(attendanceDates);
 
   return (
     <div className="flex flex-col items-center h-screen">
